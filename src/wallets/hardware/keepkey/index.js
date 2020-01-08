@@ -21,6 +21,10 @@ import errorHandler from './errorHandler';
 import store from '@/store';
 import commonGenerator from '@/helpers/commonGenerator';
 
+import { Keyring } from '@shapeshiftoss/hdwallet-core'
+import { isKeepKey, KeepKeyHDWallet } from '@shapeshiftoss/hdwallet-keepkey'
+import { WebUSBKeepKeyAdapter } from '@shapeshiftoss/hdwallet-keepkey-webusb'
+
 const { MessageType } = Messages;
 const {
   MESSAGETYPE_PINMATRIXREQUEST,
@@ -31,6 +35,8 @@ const NEED_PASSWORD = false;
 
 class KeepkeyWallet {
   constructor(eventHub) {
+    this.keyring = new Keyring();
+    const keepkeyAdapter = WebUSBKeepKeyAdapter.useKeyring(this.keyring)
     this.identifier = keepkeyType;
     this.isHardware = true;
     this.needPassword = NEED_PASSWORD;
