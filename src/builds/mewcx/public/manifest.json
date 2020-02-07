@@ -32,7 +32,14 @@
     "img/*.png",
     "img/*.jpg"
   ],
-  "permissions": ["<all_urls>", "storage", "tabs", "activeTab", "downloads", "notifications"],
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "tabs",
+    "activeTab",
+    "downloads",
+    "notifications"
+  ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "version": "5.2.0"
 }

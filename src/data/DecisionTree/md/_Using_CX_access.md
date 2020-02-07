@@ -2,7 +2,7 @@
 
 <p>Please reach out to us with as much information as possible, including browsers used and exactly what actions you were taking at the time of error.</p>
 
-* * *
+---
 
 #### Contact Form:
 

@@ -4,7 +4,7 @@
 
 ##### If your issue seems common, we’ll add it to the list!
 
-* * *
+---
 
 #### Contact Form:
 

@@ -6,13 +6,13 @@ Double-check that you have both the right amounts of DAI and MKR to close your C
 
 These are two separate verification steps, each counting as a transaction that must be verified on your device (if you're using one).
 
-* * *
+---
 
 #### Still need help?
 
-Please reach out to us with as much information as possible, referencing the contact form below. 
+Please reach out to us with as much information as possible, referencing the contact form below.
 
-* * *
+---
 
 #### Contact Form:
 

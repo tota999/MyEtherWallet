@@ -4,7 +4,7 @@
 
 ##### If it’s not a MEW issue, you may want to reach out to MetaMask.
 
-* * *
+---
 
 #### Contact Form:
 

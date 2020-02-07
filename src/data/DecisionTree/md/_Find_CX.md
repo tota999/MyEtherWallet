@@ -6,7 +6,7 @@
 
 ##### Refer to the contact form below.
 
-* * *
+---
 
 #### Contact Form:
 

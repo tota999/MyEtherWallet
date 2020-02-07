@@ -399,7 +399,10 @@ export default {
         }
       };
 
-      if (this.shouldCheckStatus() && new BigNumber(this.notice.body.timeRemaining).gt(0)) {
+      if (
+        this.shouldCheckStatus() &&
+        new BigNumber(this.notice.body.timeRemaining).gt(0)
+      ) {
         if (this.timeRemaining.gt(0)) {
           updateTime();
           this.timerInterval = setInterval(() => {

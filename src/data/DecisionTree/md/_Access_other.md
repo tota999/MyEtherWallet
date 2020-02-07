@@ -7,7 +7,7 @@
 3. Check that you’re on the most recent version of MEW, 5.1.2 or above.
 4. If that doesn’t solve your issue, reach out to us with as much info as possible about your situation.
 
-* * *
+---
 
 #### Contact Form:
 

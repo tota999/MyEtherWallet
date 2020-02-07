@@ -8,7 +8,7 @@
 
 **Please keep in mind we cannot recover private keys.**
 
-* * *
+---
 
 #### Contact Form:
 

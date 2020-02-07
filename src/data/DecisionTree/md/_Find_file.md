@@ -3,9 +3,9 @@
 #### If your keystore file is not working on our site, please try all of the steps outlined below:
 
 1. If you have your private key, try creating a new wallet through our Chrome extension, then downloading a new Keystore File.
-2. If that doesn’t solve your issue, reach out to us with as much info as possible about your situation. 
+2. If that doesn’t solve your issue, reach out to us with as much info as possible about your situation.
 
-* * *
+---
 
 #### Contact Form:
 

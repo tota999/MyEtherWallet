@@ -238,7 +238,9 @@ export default class Changelly {
 
   async startSwap(swapDetails) {
     let details;
-    if (toBigNumber(swapDetails.minValue).lte(toBigNumber(swapDetails.fromValue))) {
+    if (
+      toBigNumber(swapDetails.minValue).lte(toBigNumber(swapDetails.fromValue))
+    ) {
       details = await this.createTransaction(swapDetails);
       if (!details) throw Error('abort');
       if (details.message) throw Error(details.message);

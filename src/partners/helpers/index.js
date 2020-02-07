@@ -11,9 +11,9 @@ import { canValidateMulticoin, canValidateCoin } from './canValidate';
 const isValidEntry = utils.isValidEntry;
 const checkInvalidOrMissingValue = utils.checkInvalidOrMissingValue;
 
-const toBigNumber = (value) =>{
+const toBigNumber = value => {
   return new BigNumber(value);
-}
+};
 export {
   utils,
   toBigNumber,

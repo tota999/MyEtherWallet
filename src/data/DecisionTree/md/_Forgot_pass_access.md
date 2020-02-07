@@ -14,7 +14,7 @@
 
 4. Still doesn’t help? Reach out to us with more information.
 
-* * *
+---
 
 #### Contact Form:
 

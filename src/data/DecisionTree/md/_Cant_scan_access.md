@@ -5,7 +5,7 @@
 1. Make sure that your MEWconnect app is updated to its most recent version, and that the camera on your smartphone is clean.
 2. If that doesn’t help, please send us as much information as possible so that we can get an accurate picture of the issue.
 
-* * *
+---
 
 #### Contact Form:
 

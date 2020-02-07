@@ -1,4 +1,4 @@
-import {toBigNumber} from './index';
+import { toBigNumber } from './index';
 
 /* from https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value/4760279#4760279
    Use `-` to reverse the sort order for the specified property */
@@ -22,12 +22,11 @@ function dynamicSort(property, convertFunc) {
       const result =
         +a[property] < +b[property] ? -1 : +a[property] > +b[property] ? 1 : 0;
       return result * sortOrder;
-
     } catch (e) {
       // eslint-disable-next-line
       console.error(e);
     }
-  }
+  };
 }
 
 function dynamicSortMultiple() {

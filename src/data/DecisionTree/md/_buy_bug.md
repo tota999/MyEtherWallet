@@ -6,7 +6,7 @@
 
 ##### Refer to the contact form below.
 
-* * *
+---
 
 #### Contact Form:
 
@@ -15,7 +15,7 @@
   <note>Please include as many details as possible, such as phone / computer model, OS number, version of the app / site you are using, browser version etc.</note>
 - Attach screenshots (optional)
 
-* * *
+---
 
 #### There is a bug preventing me from buying ETH on the Simplex site.
 

@@ -4,13 +4,13 @@
 
 1. It all looks familiar.
 
-   - If everything looks in order, but you’re missing funds, please reach out to us for further information. 
+   - If everything looks in order, but you’re missing funds, please reach out to us for further information.
      - Refer to the contact form at the end of the page.
 
 2. It looks very unfamiliar!
 
-   - If you’re seeing unfamiliar transactions, it’s possible that your wallet has been compromised. 
-     - Please think back to your most recent actions. 
+   - If you’re seeing unfamiliar transactions, it’s possible that your wallet has been compromised.
+     - Please think back to your most recent actions.
      - Did you enter your key on any sites, or access your wallet from an unsecure location?
 
 <note>
@@ -20,7 +20,7 @@
 Feel free to reach out with more information so we can go from here.
 </note>
 
-* * *
+---
 
 #### Contact Form:
 

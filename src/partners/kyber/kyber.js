@@ -26,7 +26,6 @@ import kyberCalls from './kyber-calls';
 const logger = debugLogger('v5:kyber-swap');
 const errorLogger = debugLogger('v5-error:kyber');
 
-
 const DAI = 'DAI';
 
 export default class Kyber {
@@ -648,7 +647,7 @@ export default class Kyber {
       );
     } catch (e) {
       errorLogger(e);
-      Toast.responseHandler("kyber-token-not-present", 1);
+      Toast.responseHandler('kyber-token-not-present', 1);
     }
   }
 
@@ -657,7 +656,7 @@ export default class Kyber {
       return new BigNumber(this.currencies[token].decimals).toNumber();
     } catch (e) {
       errorLogger(e);
-      Toast.responseHandler("kyber-token-not-present", 1);
+      Toast.responseHandler('kyber-token-not-present', 1);
     }
   }
 
