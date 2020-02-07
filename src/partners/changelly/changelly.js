@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js';
 
 import { networkSymbols } from '../partnersConfig';
 import { Toast } from '@/helpers';
-
+import { toBigNumber } from '@/partners/helpers';
 import {
   notificationStatuses,
   ChangellyCurrencies,
@@ -238,7 +238,7 @@ export default class Changelly {
 
   async startSwap(swapDetails) {
     let details;
-    if (+swapDetails.minValue <= +swapDetails.fromValue) {
+    if (toBigNumber(swapDetails.minValue).lte(toBigNumber(swapDetails.fromValue))) {
       details = await this.createTransaction(swapDetails);
       if (!details) throw Error('abort');
       if (details.message) throw Error(details.message);

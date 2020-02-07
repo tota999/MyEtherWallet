@@ -4,7 +4,8 @@ import MAValidator from 'multicoin-address-validator';
 import {
   checkInvalidOrMissingValue,
   bestProviderForQuantity,
-  utils
+  utils,
+  toBigNumber
 } from './helpers';
 import {
   BASE_CURRENCY,
@@ -185,9 +186,9 @@ export default class SwapProviders {
       const providersFound = [];
       const callsToMake = [];
       if (
-        +fromValue > 0 &&
+        toBigNumber(fromValue).gt(0) &&
         fromCurrency !== toCurrency &&
-        !Number.isNaN(+fromValue)
+        !toBigNumber(fromValue).isNaN()
       ) {
         this.providers.forEach(provider => {
           if (provider.validSwap(fromCurrency, toCurrency)) {
@@ -231,17 +232,17 @@ export default class SwapProviders {
       ) {
         const vals = bestProviderForQuantity(
           results.map(entry => {
-            if (+entry.rate > 0) {
+            if (toBigNumber(entry.rate).gt(0)) {
               return {
                 provider: entry.provider,
                 fromCurrency,
                 fromValue: fromValue,
                 toCurrency,
-                rate: +entry.rate,
+                rate: toBigNumber(entry.rate),
                 minValue: entry.minValue || 0,
                 maxValue: entry.maxValue || 0,
                 computeConversion: function(_fromValue) {
-                  return new BigNumber(_fromValue)
+                  return toBigNumber(_fromValue)
                     .times(this.rate)
                     .toFixed(6)
                     .toString(10);

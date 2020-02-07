@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import BigNumber from 'bignumber.js';
 
 const mapToObject = map => {
   const obj = {};
@@ -33,7 +34,12 @@ function checkInvalidOrMissingValue(value, to) {
 
 const getTimeRemaining = (timestamp, validFor = 600) => {
   return (
-    validFor - parseInt((new Date().getTime() - Date.parse(timestamp)) / 1000)
+    validFor -
+    parseInt(
+      new BigNumber(new Date().getTime() - Date.parse(timestamp))
+        .div(1000)
+        .toString()
+    )
   );
 };
 

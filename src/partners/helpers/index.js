@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import {
   bestRateForQuantity,
   bestProviderForQuantity,
@@ -10,8 +11,12 @@ import { canValidateMulticoin, canValidateCoin } from './canValidate';
 const isValidEntry = utils.isValidEntry;
 const checkInvalidOrMissingValue = utils.checkInvalidOrMissingValue;
 
+const toBigNumber = (value) =>{
+  return new BigNumber(value);
+}
 export {
   utils,
+  toBigNumber,
   bestRateForQuantity,
   bestProviderForQuantity,
   isValidEntry,

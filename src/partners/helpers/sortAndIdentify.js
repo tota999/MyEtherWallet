@@ -1,3 +1,5 @@
+import {toBigNumber} from './index';
+
 /* from https://stackoverflow.com/questions/1129216/sort-array-of-objects-by-string-property-value/4760279#4760279
    Use `-` to reverse the sort order for the specified property */
 function dynamicSort(property, convertFunc) {
@@ -7,19 +9,25 @@ function dynamicSort(property, convertFunc) {
     property = property.substr(1);
   }
   return function(a, b) {
-    if (convertFunc) {
+    try {
+      if (convertFunc) {
+        const result =
+          convertFunc(+a[property]) < convertFunc(+b[property])
+            ? -1
+            : convertFunc(+a[property]) > convertFunc(+b[property])
+            ? 1
+            : 0;
+        return result * sortOrder;
+      }
       const result =
-        convertFunc(+a[property]) < convertFunc(+b[property])
-          ? -1
-          : convertFunc(+a[property]) > convertFunc(+b[property])
-          ? 1
-          : 0;
+        +a[property] < +b[property] ? -1 : +a[property] > +b[property] ? 1 : 0;
       return result * sortOrder;
+
+    } catch (e) {
+      // eslint-disable-next-line
+      console.error(e);
     }
-    const result =
-      +a[property] < +b[property] ? -1 : +a[property] > +b[property] ? 1 : 0;
-    return result * sortOrder;
-  };
+  }
 }
 
 function dynamicSortMultiple() {
@@ -71,10 +79,10 @@ function bestProviderForQuantity(providerData, value) {
 function bestRateForQuantity(providerData, value) {
   const data = bestProviderForQuantity(providerData, +value);
   for (let i = 0; i < data.length; i++) {
-    if (+value >= +data[i].minValue) {
-      return +data[i].rate;
-    } else if (+data[i].minValue === 0) {
-      return +data[i].rate;
+    if (toBigNumber(value).gte(toBigNumber(data[i].minValue))) {
+      return data[i].rate;
+    } else if (toBigNumber(data[i].minValue).eq(0)) {
+      return data[i].rate;
     }
   }
   return -1;

@@ -191,6 +191,7 @@ import {
   notificationStatuses,
   type as notificationType
 } from '@/helpers/notificationFormatters';
+import BigNumber from 'bignumber.js';
 
 export default {
   filters: {
@@ -374,37 +375,36 @@ export default {
     },
     timeUpdater() {
       const updateTime = () => {
-        this.timeRemaining =
-          this.notice.body.validFor -
-          parseInt(
-            (new Date().getTime() -
-              new Date(this.notice.body.createdAt).getTime()) /
-              1000
-          );
+        this.timeRemaining = new BigNumber(this.notice.body.validFor).minus(
+          new BigNumber(
+            new Date().getTime() -
+              new Date(this.notice.body.createdAt).getTime()
+          ).div(1000)
+        );
         if (
           (this.notice.swapStatus === swapOnlyStatuses.NEW ||
             this.currentStatus === swapOnlyStatuses.NEW) &&
-          this.timeRemaining <= 0
+          this.timeRemaining.lte(0)
         ) {
           this.notice.swapStatus = swapOnlyStatuses.CANCELLED;
           this.notice.status = notificationStatuses.FAILED;
           this.notice.body.errorMessage =
             'Swap window timeout. Swap Cancelled.';
-          this.timeRemaining = -1;
+          this.timeRemaining = new BigNumber(-1);
         }
-        this.notice.body.timeRemaining = +this.timeRemaining;
+        this.notice.body.timeRemaining = this.timeRemaining;
         this.childUpdateNotification(this.notice);
-        if (+this.timeRemaining <= 0) {
+        if (this.timeRemaining.lte(0)) {
           clearInterval(this.timerInterval);
         }
       };
 
-      if (this.shouldCheckStatus() && this.notice.body.timeRemaining > 0) {
-        if (this.timeRemaining > 0) {
+      if (this.shouldCheckStatus() && new BigNumber(this.notice.body.timeRemaining).gt(0)) {
+        if (this.timeRemaining.gt(0)) {
           updateTime();
           this.timerInterval = setInterval(() => {
             updateTime();
-            if (this.timeRemaining <= 0) {
+            if (this.timeRemaining.lte(0)) {
               clearInterval(this.timerInterval);
             }
           }, 1000);

@@ -1,7 +1,8 @@
 import debugLogger from 'debug';
 import BigNumber from 'bignumber.js';
 import ENS from 'ethereum-ens';
-import { utils } from '../helpers';
+import { Toast } from '@/helpers';
+import { utils, toBigNumber } from '../helpers';
 import { networkSymbols } from '../partnersConfig';
 import {
   ERC20,
@@ -25,9 +26,6 @@ import kyberCalls from './kyber-calls';
 const logger = debugLogger('v5:kyber-swap');
 const errorLogger = debugLogger('v5-error:kyber');
 
-const toBigNumber = num => {
-  return new BigNumber(num);
-};
 
 const DAI = 'DAI';
 
@@ -650,9 +648,7 @@ export default class Kyber {
       );
     } catch (e) {
       errorLogger(e);
-      throw Error(
-        `Token [${token}] not included in kyber network list of tokens`
-      );
+      Toast.responseHandler("kyber-token-not-present", 1);
     }
   }
 
@@ -661,9 +657,7 @@ export default class Kyber {
       return new BigNumber(this.currencies[token].decimals).toNumber();
     } catch (e) {
       errorLogger(e);
-      throw Error(
-        `Token [${token}] not included in kyber network list of tokens`
-      );
+      Toast.responseHandler("kyber-token-not-present", 1);
     }
   }
 
