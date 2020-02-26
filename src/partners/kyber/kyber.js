@@ -29,7 +29,7 @@ const toBigNumber = num => {
   return new BigNumber(num);
 };
 
-const DAI = 'DAI';
+// const DAI = 'DAI';
 
 export default class Kyber {
   constructor(props = {}) {
