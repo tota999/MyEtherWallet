@@ -1,10 +1,10 @@
 ## Using MakerDAO
 
-#### Closing a CDP
+#### Closing a Vault
 
-Double-check that you have both the right amounts of DAI and MKR to close your CDP.
+Double-check that you have the right amount of DAI to pay back your Vault's balance.
 
-These are two separate verification steps, each counting as a transaction that must be verified on your device (if you're using one).
+You'll have to approve the DAI as a separate verification step, which will count as a transaction that must be verified on your device (if you're using one).
 
 * * *
 
@@ -16,7 +16,7 @@ Please reach out to us with as much information as possible, referencing the con
 
 #### Contact Form:
 
-- Email us at [support@myetherwallet.com](mailto:support@myetherwallet.com)
+- Email us at support@myetherwallet.com
 
 - <p>Include a detailed description of the issue.</p>
   <note>Please include as many details as possible, such as phone / computer model, OS number, version of the app / site you are using, browser version etc.</note>

@@ -1,6 +1,6 @@
-## Using Simplex with MEW
+## Using Simplex / Wyre with MEW
 
-#### There is a bug preventing me from buying ETH on the MEW site.
+#### There is a bug preventing me from buying ETH on the MEW site or on the MEW wallet app.
 
 ##### Please reach out to us with more information.
 
@@ -10,15 +10,17 @@
 
 #### Contact Form:
 
-- Email us at [support@myetherwallet.com](mailto:support@myetherwallet.com)
+- Email us at support@myetherwallet.com
 - <p>Include a detailed description of the issue.</p>
   <note>Please include as many details as possible, such as phone / computer model, OS number, version of the app / site you are using, browser version etc.</note>
 - Attach screenshots (optional)
 
 * * *
 
-#### There is a bug preventing me from buying ETH on the Simplex site.
+#### There is a bug preventing me from buying ETH on the Simplex / Wyre site.
 
-Please reach out toe Simplex with as much information as possible, so they can further assist you.
+Please reach out to Simplex / Wyre with as much information as possible, so they can further assist you.
 
-Their email is [support@simplex.com](mailto:support@simplex.com).
+Simplex can be reached at support@simplex.com
+
+Wyre can be reached at support@sendwyre.com

@@ -39,6 +39,8 @@ import _dapp_other from 'raw-loader!@/data/DecisionTree/md/_dapp_other.md';
 import _buy_bug from 'raw-loader!@/data/DecisionTree/md/_buy_bug.md';
 import _suggestions from 'raw-loader!@/data/DecisionTree/md/_suggestions.md';
 import _not_listed from 'raw-loader!@/data/DecisionTree/md/_not_listed.md';
+import _Forgot_pin_access from 'raw-loader!@/data/DecisionTree/md/_Forgot_pin_access.md';
+import _Find_MEWwallet from 'raw-loader!@/data/DecisionTree/md/_Find_MEWwallet.md';
 
 export default {
   /*
@@ -74,9 +76,10 @@ export default {
     breadcrumb: 'access wallet',
     sub: [
       'Access_hardware_wallet',
-      'Access_software_wallet',
+      'Using_MEWwallet_access',
       'Using_MEWconnect_access',
       'Using_CX_access',
+      'Access_software_wallet',
       'Using_MM_access'
     ]
   },
@@ -114,6 +117,60 @@ export default {
   },
 
   /*
+  Accessing via MEW wallet
+  */
+
+  Using_MEWwallet_access: {
+    title: "I'm using the MEW wallet mobile app",
+    subtitle: '',
+    breadcrumb: 'mew wallet',
+    sub: ['Cant_scan_access','Forgot_pin_access']
+  },
+
+  Forgot_pin_access: {
+    title: 'I forgot my pin',
+    subtitle: '',
+    breadcrumb: 'forgot pin',
+    md: _Forgot_pin_access
+  },
+
+  /*
+  Accessing via MEWconnect
+  */
+
+  Using_MEWconnect_access: {
+    title: "I'm using MEWconnect",
+    subtitle: '',
+    breadcrumb: 'mewconnect',
+    sub: ['Cant_scan_access', 'Forgot_pass_access']
+  },
+
+  Cant_scan_access: {
+    title: "I can't scan the QR code with my phone camera",
+    subtitle: 'Using MEW wallet / MEWconnect',
+    breadcrumb: 'scan qr code',
+    md: _Cant_scan_access
+  },
+
+  Forgot_pass_access: {
+    title: 'I forgot my password',
+    subtitle: '',
+    breadcrumb: 'forgot password',
+    md: _Forgot_pass_access
+  },
+
+  /*
+  Accessing via MEW CX 
+  */
+
+  Using_CX_access: {
+    title: "I'm using MEW CX",
+    subtitle: '',
+    breadcrumb: 'mew cx',
+    md: _Using_CX_access
+  },
+
+  /*
   Accessing via Software 
   */
 
@@ -146,42 +203,6 @@ export default {
   },
 
   /*
-  Accessing via MEWconnect
-  */
-
-  Using_MEWconnect_access: {
-    title: "I'm using MEWconnect",
-    subtitle: '',
-    breadcrumb: 'mewconnect',
-    sub: ['Cant_scan_access', 'Forgot_pass_access']
-  },
-
-  Cant_scan_access: {
-    title: "I can't scan the QR code with my phone camera",
-    subtitle: '',
-    breadcrumb: 'scan qr code',
-    md: _Cant_scan_access
-  },
-
-  Forgot_pass_access: {
-    title: 'I forgot my password',
-    subtitle: '',
-    breadcrumb: 'forgot password',
-    md: _Forgot_pass_access
-  },
-
-  /*
-  Accessing via MEW CX 
-  */
-
-  Using_CX_access: {
-    title: "I'm using MEW CX",
-    subtitle: '',
-    breadcrumb: 'mew cx',
-    md: _Using_CX_access
-  },
-
-  /*
   Accessing via MetaMask
   */
 
@@ -204,9 +225,10 @@ export default {
     breadcrumb: 'find address',
     sub: [
       'Find_hardware',
-      'Find_software',
+      'Find_MEWwallet',
       'Find_MEWconnect',
       'Find_CX',
+      'Find_software',
       'Find_MM'
     ]
   },
@@ -242,6 +264,40 @@ export default {
     breadcrumb: 'other',
     md: _Find_other
   },
+
+  /*
+  Finding MEW wallet address
+  */
+
+ Find_MEWwallet: {
+  title: "I'm using MEW wallet",
+  subtitle: '',
+  breadcrumb: 'mew wallet',
+  md: _Find_MEWwallet
+  },
+
+  /*
+  Finding MEWconnect address
+  */
+
+ Find_MEWconnect: {
+  title: "I'm using MEWconnect",
+  subtitle: '',
+  breadcrumb: 'mewconnect',
+  md: _Find_MEWconnect
+  },
+
+  /*
+  Finding MEW CX address
+  */
+
+  Find_CX: {
+  title: "I'm using MEW CX",
+  subtitle: '',
+  breadcrumb: 'mew cx',
+  md: _Find_CX
+  },
+
 
   /*
   Finding Software address
@@ -287,28 +343,6 @@ export default {
     subtitle: '',
     breadcrumb: 'private key',
     md: _Find_key
-  },
-
-  /*
-  Finding MEWconnect address
-  */
-
-  Find_MEWconnect: {
-    title: "I'm using MEWconnect",
-    subtitle: '',
-    breadcrumb: 'mewconnect',
-    md: _Find_MEWconnect
-  },
-
-  /*
-  Finding MEW CX address
-  */
-
-  Find_CX: {
-    title: "I'm using MEW CX",
-    subtitle: '',
-    breadcrumb: 'mew cx',
-    md: _Find_CX
   },
 
   /*
@@ -386,7 +420,7 @@ export default {
   },
 
   Tokens_custom: {
-    title: 'My tokens show in my wallet on EthVM, but I cannot see them on MEW',
+    title: 'My tokens show in my wallet on Etherscan, but I cannot see them on MEW',
     subtitle: '',
     breadcrumb: 'custom tokens',
     md: _Tokens_custom
@@ -560,7 +594,7 @@ export default {
 
   dapp_other: {
     title: 'Other',
-    subtitle: '(ENS, SafeSend, etc.)',
+    subtitle: '(ENS, Aave, etc.)',
     breadcrumb: 'other',
     md: _dapp_other
   },
