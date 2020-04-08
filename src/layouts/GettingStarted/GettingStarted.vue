@@ -121,6 +121,7 @@ import WhatIsUpside from './components/WhatIsUpside';
 import Congratulations from './components/Congratulations';
 import StandardButton from '@/components/Buttons/StandardButton';
 import store from 'store';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -139,12 +140,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions('main', ['gettingStartedDone']),
     done() {
       store.set('skipTutorial', 'done');
       this.$router.push({ path: 'create-wallet' });
-      this.$store.dispatch('gettingStartedDone');
+      this.gettingStartedDone();
     },
-    mouseScrollDown: function() {
+    mouseScrollDown: function () {
       if (this.cwwCurrent < this.cwwRefs.length - 1) {
         this.cwwCurrent++;
         this.$refs[this.cwwRefs[this.cwwCurrent - 1]].$el.classList.add(
@@ -155,7 +157,7 @@ export default {
         );
       }
     },
-    mouseScrollUp: function() {
+    mouseScrollUp: function () {
       if (this.cwwCurrent > 0) {
         this.cwwCurrent--;
         this.$refs[this.cwwRefs[this.cwwCurrent + 1]].$el.classList.add(

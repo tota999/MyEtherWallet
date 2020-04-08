@@ -65,7 +65,7 @@ export default {
   props: {
     checkDomain: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     loading: {
       type: Boolean,
@@ -98,7 +98,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['network']),
+    ...mapState('main', ['network']),
     isValidLength() {
       return (
         this.localDomainName.replace(

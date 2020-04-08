@@ -82,7 +82,7 @@ import ConfirmCollectionModal from './components/ConfirmCollectionModal';
 import SuccessModal from './components/SuccessModal';
 import ErrorModal from './components/ErrorModal';
 import ConfirmSignModal from './components/ConfirmSignModal';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { type as noticeTypes } from '@/helpers/notificationFormatters';
 import { WEB3_WALLET, KEEPKEY } from '@/wallets/bip44/walletTypes';
 import { Toast, Misc } from '@/helpers';
@@ -116,7 +116,7 @@ export default {
     },
     rawTx: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     }
@@ -170,7 +170,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['wallet', 'web3', 'account', 'network']),
+    ...mapState('main', ['wallet', 'web3', 'account', 'network']),
     fromAddress() {
       if (this.account) {
         return this.account.address;
@@ -231,8 +231,10 @@ export default {
 
       signPromise
         .then(_response => {
-          this.signedTxObject = _response;
-          this.signedTx = this.signedTxObject.rawTransaction;
+          if (_response) {
+            this.signedTxObject = _response;
+            this.signedTx = this.signedTxObject.rawTransaction;
+          }
         })
         .catch(this.wallet.errorHandler);
       if (this.account.identifier === KEEPKEY) {
@@ -309,9 +311,14 @@ export default {
       this.responseFunction = resolve;
       this.messageToSign = data;
       this.signedMessage = '';
-      const signPromise = this.wallet.signMessage(data).then(_response => {
-        this.signedMessage = '0x' + _response.toString('hex');
-      });
+      const signPromise = this.wallet
+        .signMessage(data)
+        .then(_response => {
+          this.signedMessage = '0x' + _response.toString('hex');
+        })
+        .catch(err => {
+          this.wallet.errorHandler(err);
+        });
       if (this.account.identifier === KEEPKEY) {
         signPromise.then(() => {
           this.signConfirmationModalOpen();
@@ -351,8 +358,17 @@ export default {
       this.successMessage = '';
       this.linkMessage = 'OK';
     });
+
+    if (this.$refs.hasOwnProperty('confirmModal')) {
+      this.$refs.confirmModal.$refs.confirmation.$on('hidden', () => {
+        if (this.dismissed) {
+          this.$eventHub.$emit('emptyPendingToken');
+        }
+      });
+    }
   },
   methods: {
+    ...mapActions('main', ['addNotification']),
     swapWidgetModalOpen(
       destAddress,
       fromCurrency,
@@ -486,16 +502,13 @@ export default {
         this.account.identifier === WEB3_WALLET
           ? 'sendTransaction'
           : 'sendSignedTransaction';
-      const _arr =
-        this.account.identifier === WEB3_WALLET
-          ? this.signedArray.reverse()
-          : this.signedArray;
+      const _arr = this.signedArray;
       const promises = _arr.map(tx => {
         const _tx = tx.tx;
         _tx.from = this.account.address;
         const _rawTx = tx.rawTransaction;
         const onError = err => {
-          this.$store.dispatch('addNotification', [
+          this.addNotification([
             noticeTypes.TRANSACTION_ERROR,
             _tx.from,
             this.unSignedArray.find(entry =>
@@ -514,7 +527,7 @@ export default {
             'Okay',
             this.network.type.blockExplorerTX.replace('[[txHash]]', hash)
           );
-          this.$store.dispatch('addNotification', [
+          this.addNotification([
             noticeTypes.TRANSACTION_HASH,
             _tx.from,
             this.unSignedArray.find(entry =>
@@ -533,7 +546,7 @@ export default {
           });
         });
         promiEvent.then(receipt => {
-          this.$store.dispatch('addNotification', [
+          this.addNotification([
             noticeTypes.TRANSACTION_RECEIPT,
             _tx.from,
             this.unSignedArray.find(entry =>

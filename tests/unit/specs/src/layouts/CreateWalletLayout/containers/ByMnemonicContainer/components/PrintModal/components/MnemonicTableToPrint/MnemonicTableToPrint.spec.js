@@ -21,6 +21,11 @@ xdescribe('MnemonicTableToPrint.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should render correct contents', () => {
     const mnemonic = [];
     mnemonic.push('values1');
@@ -36,10 +41,7 @@ xdescribe('MnemonicTableToPrint.vue', () => {
 
   it('should render isTwentyFour props data', () => {
     expect(
-      wrapper
-        .find('.full-mnemonic')
-        .classes()
-        .indexOf('full-mnemonic')
+      wrapper.find('.full-mnemonic').classes().indexOf('full-mnemonic')
     ).toBeGreaterThan(-1);
   });
 });

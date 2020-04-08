@@ -5,6 +5,7 @@ import { shallowMount } from '@vue/test-utils';
 import SwapSendToModal from '@/layouts/InterfaceLayout/containers/SwapContainer/components/SwapSendToModal/SwapSendToModal.vue';
 import { Tooling } from '@@/helpers';
 import CheckoutForm from '@/layouts/InterfaceLayout/containers/SwapContainer/components/CheckoutForm/CheckoutForm.vue';
+import { state, getters } from '@@/helpers/mockStore';
 
 const showModal = sinon.stub();
 const hideModal = sinon.stub();
@@ -34,7 +35,14 @@ describe('SwapSendToModal.vue', () => {
     };
 
     store = new Vuex.Store({
-      actions
+      modules: {
+        main: {
+          namespaced: true,
+          state,
+          getters,
+          actions
+        }
+      }
     });
   });
 
@@ -49,6 +57,11 @@ describe('SwapSendToModal.vue', () => {
         'simplex-checkout-form': CheckoutForm
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   xit('should render correct fromAddress data', () => {

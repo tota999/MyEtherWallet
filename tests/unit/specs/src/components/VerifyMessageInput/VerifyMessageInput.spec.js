@@ -23,6 +23,11 @@ describe('VerifyMessageInput.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should render correct message data', () => {
     wrapper.setData({ message: 'message' });
     expect(wrapper.vm.$el.querySelector('.the-form textarea').value).toEqual(
@@ -47,10 +52,7 @@ describe('VerifyMessageInput.vue', () => {
     });
     expect(wrapper.vm.$data.message).toEqual(wrapper.props().signature);
 
-    wrapper
-      .findAll('.copy-buttons span')
-      .at(0)
-      .trigger('click');
+    wrapper.findAll('.copy-buttons span').at(0).trigger('click');
     expect(wrapper.vm.$data.showMessage).toBe(false);
     expect(wrapper.vm.$data.message).toBe('');
   });

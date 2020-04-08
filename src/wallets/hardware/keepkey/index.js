@@ -20,6 +20,7 @@ import { Transaction } from 'ethereumjs-tx';
 import errorHandler from './errorHandler';
 import store from '@/store';
 import commonGenerator from '@/helpers/commonGenerator';
+import Vue from 'vue';
 
 import { Keyring } from '@shapeshiftoss/hdwallet-core'
 import { isKeepKey, KeepKeyHDWallet } from '@shapeshiftoss/hdwallet-keepkey'
@@ -97,7 +98,7 @@ class KeepkeyWallet {
     }
     const txSigner = async tx => {
       tx = new Transaction(tx, {
-        common: commonGenerator(store.state.network)
+        common: commonGenerator(store.state.main.network)
       });
       const hexTx = getUint8Tx(tx);
       const networkId = tx.getChainId();
@@ -115,10 +116,10 @@ class KeepkeyWallet {
       const signedChainId = calculateChainIdFromV(tx.v);
       if (signedChainId !== networkId)
         throw new Error(
-          'Invalid networkId signature returned. Expected: ' +
-            networkId +
-            ', Got: ' +
-            signedChainId,
+          Vue.$i18n.t('errorsGlobal.invalid-network-id-sig', {
+            got: signedChainId,
+            expected: networkId
+          }),
           'InvalidNetworkId'
         );
       return getSignTransactionObject(tx);

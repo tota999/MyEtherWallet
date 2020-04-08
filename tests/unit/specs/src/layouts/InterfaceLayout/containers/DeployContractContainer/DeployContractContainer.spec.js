@@ -7,6 +7,8 @@ import PopOver from '@/components/PopOver/PopOver.vue';
 import BackButton from '@/layouts/InterfaceLayout/components/BackButton/BackButton.vue';
 // import sinon from 'sinon';
 import { Tooling } from '@@/helpers';
+import VueX from 'vuex';
+import { state, getters } from '@@/helpers/mockStore';
 
 describe('DeployContractContainer.vue', () => {
   let localVue, i18n, wrapper, store;
@@ -25,7 +27,15 @@ describe('DeployContractContainer.vue', () => {
     const baseSetup = Tooling.createLocalVueInstance();
     localVue = baseSetup.localVue;
     i18n = baseSetup.i18n;
-    store = baseSetup.store;
+    store = new VueX.Store({
+      modules: {
+        main: {
+          namespaced: true,
+          state,
+          getters
+        }
+      }
+    });
     Vue.config.warnHandler = () => {};
   });
   beforeEach(() => {
@@ -43,6 +53,11 @@ describe('DeployContractContainer.vue', () => {
       }
     });
     wrapper.find('div'); // added to suppress eslint warning
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
   it('should render correct bytecode', () => {
     const bytecode = 'bytecode';
@@ -109,10 +124,7 @@ describe('DeployContractContainer.vue', () => {
 
   describe('DeployContractContainer.vue Methods', () => {
     it('should execute `copy` command when button is clicked', () => {
-      wrapper
-        .findAll('.title-button')
-        .at(1)
-        .trigger('click');
+      wrapper.findAll('.title-button').at(1).trigger('click');
       expect(document.execCommand).toHaveBeenCalled();
     });
 

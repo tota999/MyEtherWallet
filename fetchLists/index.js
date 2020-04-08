@@ -4,6 +4,10 @@ const configs = require('./configs');
 const tokenList = require('./lists/tokens.json');
 const contractList = require('./lists/contracts.json');
 
+if (!fs.existsSync(configs.GENERATED_FOLDER_PATH)) {
+  fs.mkdirSync(configs.GENERATED_FOLDER_PATH);
+}
+
 const fetchTokens = async () => {
   try {
     if (!fs.existsSync(configs.TOKENS_PATH)) {
@@ -67,11 +71,6 @@ const fetchUrlDarklist = async () => {
     },
     {
       repo:
-        'https://raw.githubusercontent.com/iosiro/counter_phishing_blacklist/master/blacklists/domains.json',
-      identifier: 'iosiro'
-    },
-    {
-      repo:
         'https://raw.githubusercontent.com/phishfort/phishfort-lists/master/blacklists/domains.json',
       identifier: 'phishfort'
     },
@@ -101,16 +100,12 @@ const fetchUrlDarklist = async () => {
           });
 
           fs.writeFileSync(
-            `${configs.URL_DARKLIST_PATH}/${
-              sources[idx].identifier
-            }-blacklisted-domains.json`,
+            `${configs.URL_DARKLIST_PATH}/${sources[idx].identifier}-blacklisted-domains.json`,
             JSON.stringify(newRes)
           );
         } else {
           fs.writeFileSync(
-            `${configs.URL_DARKLIST_PATH}/${
-              sources[idx].identifier
-            }-blacklisted-domains.json`,
+            `${configs.URL_DARKLIST_PATH}/${sources[idx].identifier}-blacklisted-domains.json`,
             JSON.stringify(res)
           );
         }
@@ -153,16 +148,12 @@ const fetchUrlLightlist = async () => {
           });
 
           fs.writeFileSync(
-            `${configs.URL_LIGHTLIST_PATH}/${
-              sources[idx].identifier
-            }-whitelisted-domains.json`,
+            `${configs.URL_LIGHTLIST_PATH}/${sources[idx].identifier}-whitelisted-domains.json`,
             JSON.stringify(newRes)
           );
         } else {
           fs.writeFileSync(
-            `${configs.URL_LIGHTLIST_PATH}/${
-              sources[idx].identifier
-            }-whitelisted-domains.json`,
+            `${configs.URL_LIGHTLIST_PATH}/${sources[idx].identifier}-whitelisted-domains.json`,
             JSON.stringify(res)
           );
         }

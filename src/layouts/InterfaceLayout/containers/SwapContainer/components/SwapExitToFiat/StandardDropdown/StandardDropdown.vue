@@ -1,12 +1,14 @@
 <template>
-  <div class="standard-dropdown">
-    <div class="wrap">
+  <div class="wrap">
+    <div class="standard-dropdown">
       <div class="dropdown-button" @click="dropdownOpen">
         <p v-if="chosenValue !== ''">{{ chosenValue }}</p>
         <p v-if="chosenValue === ''" class="placeholder">{{ placeholder }}</p>
         <i aria-hidden="true" class="fa fa-angle-down"></i>
       </div>
-      <div v-if="open">
+      <!--      {{localOptions}}-->
+
+      <div v-show="open">
         <div class="dropdown-search-container">
           <input v-model="search" :placeholder="$t('common.search')" />
           <i class="fa fa-search" />
@@ -15,6 +17,7 @@
           <li
             v-for="(entry, idx) in localOptions"
             :key="idx"
+            class="item"
             @click="setSelected(entry)"
           >
             {{ displayName(entry) }}
@@ -30,7 +33,7 @@ export default {
   props: {
     options: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -64,9 +67,7 @@ export default {
             this.displayName(curr)
               .toLowerCase()
               .includes(newVal.toLowerCase()) ||
-            this.displayName(curr)
-              .toLowerCase()
-              .includes(newVal.toLowerCase())
+            this.displayName(curr).toLowerCase().includes(newVal.toLowerCase())
           ) {
             return curr;
           }

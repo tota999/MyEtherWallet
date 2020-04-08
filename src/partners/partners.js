@@ -34,6 +34,7 @@ export default class SwapProviders {
     }
     this.providerConstructors = providers;
     this.setup(providers, environmentSupplied, misc);
+    this.startTime = Date.now();
   }
 
   setup(providers, environmentSupplied, misc) {
@@ -89,7 +90,7 @@ export default class SwapProviders {
   get ratesRetrieved() {
     let result = true;
     this.providers.forEach(provider => {
-      if (!provider.ratesRetrieved) {
+      if (!provider.ratesRetrieved && Date.now() - this.startTime < 2000) {
         result = false;
       }
     });
@@ -239,7 +240,7 @@ export default class SwapProviders {
                 rate: +entry.rate,
                 minValue: entry.minValue || 0,
                 maxValue: entry.maxValue || 0,
-                computeConversion: function(_fromValue) {
+                computeConversion: function (_fromValue) {
                   return new BigNumber(_fromValue)
                     .times(this.rate)
                     .toFixed(6)
@@ -307,10 +308,7 @@ export default class SwapProviders {
   convertToTokenWei(token, value) {
     const decimals = SwapProviders.getTokenDecimals(token);
     const denominator = new BigNumber(10).pow(decimals);
-    return new BigNumber(value)
-      .times(denominator)
-      .toFixed(0)
-      .toString(10);
+    return new BigNumber(value).times(denominator).toFixed(0).toString(10);
   }
 
   convertToTokenBase(token, value) {

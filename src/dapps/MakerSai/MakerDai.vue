@@ -205,9 +205,7 @@ const toBigNumber = num => {
 };
 
 const bnOver = (one, two, three) => {
-  return toBigNumber(one)
-    .times(toBigNumber(two))
-    .div(toBigNumber(three));
+  return toBigNumber(one).times(toBigNumber(two)).div(toBigNumber(three));
 };
 
 export default {
@@ -223,13 +221,13 @@ export default {
   props: {
     tokensWithBalance: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     getBalance: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     highestGas: {
       type: String,
@@ -291,7 +289,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account', 'gasPrice', 'web3', 'network', 'ens']),
+    ...mapState('main', ['account', 'gasPrice', 'web3', 'network', 'ens']),
     maxDaiDraw() {
       if (this.ethQty <= 0) return 0;
       return bnOver(this.ethPrice, this.ethQty, this.liquidationRatio);

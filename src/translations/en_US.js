@@ -16,10 +16,13 @@ import popover from './popover/en_US';
 import withoutWallet from './without-wallet/en_US';
 import errorsGlobal from './errors-global/en_US';
 import trezorError from './errors-trezor/en_US';
+import bcvaultError from './errors-bcvault/en_US';
+import coolWalletError from './errors-coolwallet/en_US';
 import ledgerError from './errors-ledger/en_US';
 import secalotError from './errors-secalot/en_US';
 import keepkeyError from './errors-keepkey/en_US';
 import bitboxError from './errors-bitbox/en_US';
+import bitbox02Error from './errors-bitbox02/en_US';
 import buyHardwareWallet from './other/buy-hardware-wallet/en_US';
 import convertUnits from './other/convert-units/en_US';
 import verifyMessage from './other/verify-message/en_US';
@@ -37,6 +40,7 @@ import notifications from './notifications/en_US';
 import mewcx from './mew-cx/en_US';
 import dappsAmbrpay from './dapps-ambrpay/en_US';
 import phishing from './other/phishing/en_US';
+import dappsAave from './dapps-aave/en_US';
 import header from './header/en_US';
 import dappsMCDMaker from './dapps-mcd-maker/en_US';
 
@@ -56,10 +60,13 @@ const en_US = {
   withoutWallet: withoutWallet,
   errorsGlobal: errorsGlobal,
   trezorError: trezorError,
+  coolWalletError: coolWalletError,
   ledgerError: ledgerError,
+  bcvaultError: bcvaultError,
   secalotError: secalotError,
   keepkeyError: keepkeyError,
   bitboxError: bitboxError,
+  bitbox02Error: bitbox02Error,
   buyHardwareWallet: buyHardwareWallet,
   dappsMaker: dappsMaker,
   convertUnits: convertUnits,
@@ -79,6 +86,7 @@ const en_US = {
   mewcx: mewcx,
   dappsAmbrpay: dappsAmbrpay,
   phishing: phishing,
+  dappsAave: dappsAave,
   header: header,
   dappsMCDMaker: dappsMCDMaker
 };

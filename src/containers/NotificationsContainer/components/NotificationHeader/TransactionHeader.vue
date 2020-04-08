@@ -23,25 +23,25 @@ export default {
   props: {
     expand: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     notice: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
     processStatus: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     dateString: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     timeString: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['web3', 'network', 'notifications', 'wallet']),
+    ...mapState('main', ['web3', 'network', 'notifications', 'wallet']),
     typeString() {
       if (notificationHeaderLabels[this.notice.type]) {
         return this.$t(notificationHeaderLabels[this.notice.type]);

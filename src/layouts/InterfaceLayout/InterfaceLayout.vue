@@ -35,6 +35,11 @@
       :priv-key="!wallet"
       :address="account.address"
     />
+    <bcvault-address-modal
+      ref="bcvault"
+      :addresses="bcVaultWallets"
+      :callback-fn="bcVaultCb"
+    />
     <address-qrcode-modal ref="addressQrcodeModal" :address="account.address" />
     <!-- Modals ******************************************************** -->
     <!-- Modals ******************************************************** -->
@@ -53,7 +58,7 @@
         <div
           :class="isSidemenuOpen && 'side-nav-open'"
           class="side-nav-background"
-          @click="toggleSideMenu;"
+          @click="startToggleSideMenu;"
         />
         <div :class="isSidemenuOpen && 'side-nav-open'" class="side-nav">
           <interface-side-menu />
@@ -95,11 +100,15 @@
           />
           <div class="tokens">
             <interface-tokens
+              v-if="$route.fullPath !== '/interface/dapps/aave/action'"
               :fetch-tokens="setTokens"
               :get-token-balance="getTokenBalance"
               :tokens="tokens"
               :received-tokens="receivedTokens"
               :reset-token-selection="setTokensWithBalance"
+            />
+            <token-overview
+              v-if="$route.fullPath === '/interface/dapps/aave/action'"
             />
           </div>
         </div>
@@ -109,11 +118,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import ENS from 'ethereum-ens';
+import TokenOverview from '@/dapps/Aave/components/TokenOverview';
 import WalletPasswordModal from '@/components/WalletPasswordModal';
 import EnterPinNumberModal from '@/components/EnterPinNumberModal';
 import NetworkAndAddressModal from '@/layouts/AccessWalletLayout/components/NetworkAndAddressModal';
+import BcVaultAddressModal from '@/layouts/AccessWalletLayout/components/BcVaultAddressModal';
 import HardwarePasswordModal from '@/layouts/AccessWalletLayout/components/HardwarePasswordModal';
 import MnemonicPasswordModal from '@/layouts/AccessWalletLayout/components/MnemonicPasswordModal';
 import MnemonicModal from '@/layouts/AccessWalletLayout/components/MnemonicModal';
@@ -140,21 +151,26 @@ import {
   LedgerWallet,
   TrezorWallet,
   BitBoxWallet,
+  BitBox02Wallet,
   SecalotWallet,
-  KeepkeyWallet
+  KeepkeyWallet,
+  BCVaultWallet
 } from '@/wallets';
 import {
   WEB3_WALLET as WEB3_TYPE,
   LEDGER as LEDGER_TYPE,
   TREZOR as TREZOR_TYPE,
   BITBOX as BITBOX_TYPE,
+  BITBOX02 as BITBOX02_TYPE,
   SECALOT as SECALOT_TYPE,
   KEEPKEY as KEEPKEY_TYPE,
-  MNEMONIC as MNEMONIC_TYPE
+  MNEMONIC as MNEMONIC_TYPE,
+  BCVAULT as BC_VAULT
 } from '@/wallets/bip44/walletTypes';
 export default {
   name: 'Interface',
   components: {
+    'bcvault-address-modal': BcVaultAddressModal,
     'interface-side-menu': InterfaceSideMenu,
     'interface-address': InterfaceAddress,
     'interface-balance': InterfaceBalance,
@@ -169,7 +185,8 @@ export default {
     'enter-pin-number-modal': EnterPinNumberModal,
     'mobile-interface-address': MobileInterfaceAddress,
     'address-qrcode-modal': AddressQrcodeModal,
-    'ledger-app-modal': LedgerAppModal
+    'ledger-app-modal': LedgerAppModal,
+    'token-overview': TokenOverview
   },
   data() {
     return {
@@ -203,7 +220,8 @@ export default {
       gaslimit: '21000',
       gas: 0,
       tokensymbol: '',
-      prefilled: false
+      prefilled: false,
+      bcVaultWallets: []
     };
   },
   computed: {
@@ -216,7 +234,7 @@ export default {
       }
       return null;
     },
-    ...mapState([
+    ...mapState('main', [
       'network',
       'account',
       'online',
@@ -242,6 +260,16 @@ export default {
     this.clearIntervals();
   },
   methods: {
+    ...mapActions('main', [
+      'switchNetwork',
+      'setWeb3Instance',
+      'saveQueryVal',
+      'updateBlockNumber',
+      'setAccountBalance',
+      'setENS',
+      'decryptWallet',
+      'toggleSideMenu'
+    ]),
     checkPrefilled() {
       const _self = this;
       const hasLinkQuery = Object.keys(_self.linkQuery).length;
@@ -270,12 +298,12 @@ export default {
           const foundNetwork = _self.Networks[network.toUpperCase()];
           // eslint-disable-next-line
           if (!!foundNetwork) {
-            _self.$store.dispatch('switchNetwork', foundNetwork[0]).then(() => {
-              _self.$store.dispatch('setWeb3Instance');
+            _self.switchNetwork(foundNetwork[0]).then(() => {
+              _self.setWeb3Instance();
             });
           }
         }
-        _self.$store.dispatch('saveQueryVal', {});
+        _self.saveQueryVal({});
       }
     },
     clearPrefilled() {
@@ -324,6 +352,26 @@ export default {
         case BITBOX_TYPE:
           this.togglePasswordModal(BitBoxWallet, 'BitBox');
           break;
+        case BITBOX02_TYPE:
+          // eslint-disable-next-line no-case-declarations
+          let bb02;
+          BitBox02Wallet()
+            .then(_newWallet => {
+              bb02 = _newWallet;
+              this.$emit('bitbox02Open', bb02);
+              bb02
+                .init('')
+                .then(() => {
+                  this.toggleNetworkAddrModal(bb02);
+                })
+                .catch(e => {
+                  BitBox02Wallet.errorHandler(e);
+                });
+            })
+            .catch(e => {
+              BitBox02Wallet.errorHandler(e);
+            });
+          break;
         case SECALOT_TYPE:
           this.togglePasswordModal(SecalotWallet, 'Secalot');
           break;
@@ -337,6 +385,22 @@ export default {
             })
             .catch(KeepkeyWallet.errorHandler);
           break;
+        case BC_VAULT:
+          // eslint-disable-next-line
+          const BCVaultWalletInstance = BCVaultWallet();
+          BCVaultWalletInstance.init()
+            .then(res => {
+              if (res.length > 1) {
+                this.bcVaultWallets = res;
+                this.$refs.bcvault.$refs.bcvaultAddress.show();
+              } else {
+                BCVaultWallet.erroHandler({ jsError: 'mew1' });
+              }
+            })
+            .catch(e => {
+              BCVaultWallet.errorHandler(e);
+            });
+          break;
         default:
           Toast.responseHandler(
             new Error(
@@ -346,16 +410,27 @@ export default {
           );
       }
     },
+    bcVaultCb(address) {
+      const BCVaultWalletInstance = BCVaultWallet();
+      const walletInstance = BCVaultWalletInstance.getAccount(address);
+      this.decryptWallet([walletInstance]).then(() => {
+        this.$refs.bcvault.$refs.bcvaultAddress.hide();
+      });
+    },
     print() {
       this.$refs.printModal.$refs.print.show();
     },
-    toggleSideMenu() {
-      this.$store.commit('TOGGLE_SIDEMENU');
+    startToggleSideMenu() {
+      this.toggleSideMenu();
     },
     async fetchTokens() {
       this.receivedTokens = false;
       let tokens = [];
-      if (this.network.type.chainID === 1 || this.network.type.chainID === 3) {
+      if (
+        this.network.type.chainID === 1 ||
+        (this.network.type.chainID === 3 &&
+          !this.network.url.includes('infura'))
+      ) {
         const tb = new TokenBalance(this.web3.currentProvider);
         try {
           tokens = await tb.getBalance(
@@ -383,6 +458,7 @@ export default {
           return token;
         });
       }
+      this.receivedTokens = true;
       return tokens;
     },
     async setNonce() {
@@ -518,7 +594,7 @@ export default {
         .getBlockNumber()
         .then(res => {
           this.blockNumber = res;
-          this.$store.dispatch('updateBlockNumber', res);
+          this.updateBlockNumber(res);
         })
         .catch(e => {
           Toast.responseHandler(e, Toast.ERROR);
@@ -530,7 +606,7 @@ export default {
         .getBalance(this.address.toLowerCase())
         .then(res => {
           this.balance = web3.utils.fromWei(res, 'ether');
-          this.$store.dispatch('setAccountBalance', res);
+          this.setAccountBalance(res);
         })
         .catch(e => {
           Toast.responseHandler(e, Toast.ERROR);
@@ -541,7 +617,7 @@ export default {
       window.ethereum.on('accountsChanged', account => {
         if (account.length > 1) {
           const wallet = new Web3Wallet(account[0]);
-          this.$store.dispatch('decryptWallet', [wallet, web3]);
+          this.decryptWallet([wallet, web3]);
         }
       });
     },
@@ -552,7 +628,7 @@ export default {
             networkTypes[net].chainID.toString() === `${id}` &&
             this.Networks[net]
           ) {
-            this.$store.dispatch('switchNetwork', this.Networks[net][0]);
+            this.switchNetwork(this.Networks[net][0]);
             return true;
           }
         });
@@ -567,7 +643,7 @@ export default {
         this.checkAndSetNetwork(netId);
       });
     },
-    setupOnlineEnvironment: web3Utils._.debounce(function() {
+    setupOnlineEnvironment: web3Utils._.debounce(function () {
       this.clearIntervals();
       if (store.get('customTokens') === undefined) {
         store.set('customTokens', {});
@@ -586,7 +662,7 @@ export default {
               this.web3WalletPollAddress();
             }
           }
-          this.setENS();
+          this.callSetENS();
           this.getBlock();
           this.getBalance();
           this.setTokens();
@@ -624,14 +700,15 @@ export default {
           Toast.responseHandler(e, Toast.ERROR);
         });
     },
-    setENS() {
+    callSetENS() {
       if (this.network.type.ens) {
-        this.$store.dispatch(
-          'setENS',
-          new ENS(this.web3.currentProvider, this.network.type.ens.registry)
+        const newEns = new ENS(
+          this.web3.currentProvider,
+          this.network.type.ens.registry
         );
+        this.setENS(newEns);
       } else {
-        this.$store.dispatch('setENS', null);
+        this.setENS(null);
       }
     },
     clearIntervals() {
@@ -653,7 +730,7 @@ export default {
             if (this.network.type.chainID.toString() !== id) {
               Object.keys(networkTypes).some(net => {
                 if (networkTypes[net].chainID === id && this.Networks[net]) {
-                  this.$store.dispatch('switchNetwork', this.Networks[net]);
+                  this.switchNetwork(this.Networks[net]);
                   clearInterval(this.pollNetwork);
                   return true;
                 }
@@ -694,10 +771,7 @@ export default {
             address.toLowerCase() !== this.account.address.toLowerCase()
           ) {
             const wallet = new Web3Wallet(address);
-            this.$store.dispatch('decryptWallet', [
-              wallet,
-              window.web3.currentProvider
-            ]);
+            this.decryptWallet([wallet, window.web3.currentProvider]);
             clearInterval(this.pollAddress);
           }
         });

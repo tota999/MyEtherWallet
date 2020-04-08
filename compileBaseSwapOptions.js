@@ -1,13 +1,14 @@
 // NOTE: this is a temporary solution.  This operation will be moved to runtime in the future. Currently it relies on manually updated files.
 const fs = require('fs');
-const uuid = require('uuid/v4');
+const {v4} = require('uuid');
 
 const fetch = require('node-fetch');
 const web3 = require('web3');
+const defaultEthTokens = require('./src/_generated/tokens/tokens-eth.json');
 
-const swapConfigFolder = './src/partners/partnersConfig';
-const changellyConfigFolder = './src/partners/changelly/config';
-const kyberConfigFolder = './src/partners/kyber/config';
+const swapConfigFolder = './src/_generated/partners';
+const changellyConfigFolder = './src/_generated/partners';
+const kyberConfigFolder = './src/_generated/partners';
 
 const explicitStringReplacements = {
   RLC: {
@@ -27,15 +28,41 @@ class CompileSwapOptions {
   async getDecimals(address) {
     try {
       return await new this.web3.eth.Contract(
-        ERC20(),
+        [
+          {
+            constant: true,
+            inputs: [],
+            name: 'decimals',
+            outputs: [
+              {
+                name: '',
+                type: 'uint8'
+              }
+            ],
+            payable: false,
+            stateMutability: 'view',
+            type: 'function'
+          }
+        ],
         address.contractAddress
       ).methods
         .decimals()
         .call();
     } catch (e) {
+      try {
+        const tokenFound = defaultEthTokens.find(
+          token =>
+            token.address.toLowerCase() == address.contractAddress.toLowerCase()
+        );
+        if (tokenFound) {
+          return tokenFound.decimals;
+        }
+      } catch (e) {
+        console.error(e);
+      }
       console.error(e);
-      return {};
     }
+    return {};
   }
 
   async post(url = ``, data = {}, opts = {}) {
@@ -73,7 +100,7 @@ class CompileSwapOptions {
       jsonrpc: '2.0',
       method: method,
       params: data,
-      id: uuid()
+      id: v4()
     };
   }
 
@@ -255,39 +282,47 @@ class CompileSwapOptions {
     }
 
     if (Object.keys(withChangelly.other).length > 0) {
+      if (!fs.existsSync(swapConfigFolder)) {
+        fs.mkdirSync(swapConfigFolder);
+      }
       fs.writeFileSync(
-        `${swapConfigFolder}/OtherCoins.js`,
-        `export default ${JSON.stringify(withChangelly.other)} `
+        `${swapConfigFolder}/OtherCoins.json`,
+        JSON.stringify(withChangelly.other)
       );
     }
 
     if (Object.keys(withChangelly.ETH).length > 0) {
+      if (!fs.existsSync(swapConfigFolder)) {
+        fs.mkdirSync(swapConfigFolder);
+      }
       fs.writeFileSync(
-        `${swapConfigFolder}/EthereumTokens.js`,
-        `export default ${JSON.stringify(withChangelly.ETH)} `
+        `${swapConfigFolder}/EthereumTokens.json`,
+        JSON.stringify(withChangelly.ETH)
       );
     }
     if (Object.keys(this.changellyBaseOptions).length > 0) {
+      if (!fs.existsSync(changellyConfigFolder)) {
+        fs.mkdirSync(changellyConfigFolder);
+      }
       fs.writeFileSync(
-        `${changellyConfigFolder}/currencies.js`,
-        `const ChangellyCurrencies = ${JSON.stringify(
-          this.changellyBaseOptions
-        )}; \nexport { ChangellyCurrencies };\n`
+        `${changellyConfigFolder}/currencies.json`,
+        JSON.stringify(this.changellyBaseOptions)
       );
     }
 
     if (Object.keys(this.kyberBaseOptions).length > 0) {
       this.kyberBaseOptions['THISISADUMMYTOKEN'] = {
         symbol: 'THISISADUMMYTOKEN',
-          name: 'For tests',
-          decimals: 18,
-          contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        name: 'For tests',
+        decimals: 18,
+        contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
       };
+      if (!fs.existsSync(kyberConfigFolder)) {
+        fs.mkdirSync(kyberConfigFolder);
+      }
       fs.writeFileSync(
-        `${kyberConfigFolder}/currenciesETH.js`,
-        `const KyberCurrenciesETH = ${JSON.stringify(
-          this.kyberBaseOptions
-        )}; \nexport { KyberCurrenciesETH };\n`
+        `${kyberConfigFolder}/currenciesETH.json`,
+        JSON.stringify(this.kyberBaseOptions)
       );
     }
     console.log('Complete');

@@ -10,7 +10,6 @@ import {
   WEB3_SEND_SIGN_MSG,
   CX_WEB3_DETECTED,
   WEB3_RPC_REQUEST,
-  WEB3_CHAIN_CHANGE,
   WEB3_NETWORK_CHANGE,
   WEB3_SUBSCRIBE,
   CX_SUBSCRIBE,
@@ -104,30 +103,38 @@ const chrome = window.chrome;
 const extensionID = chrome.runtime.id;
 let getAccountModalIsOPen = false;
 
-chrome.storage.onChanged.addListener(function(res) {
-  Object.keys(res).forEach(val => {
-    const eventName = val.includes('ChainID')
-      ? WEB3_CHAIN_CHANGE.replace('{{id}}', extensionID)
-      : val.includes('NetVersion')
-      ? WEB3_NETWORK_CHANGE.replace('{{id}}', extensionID)
-      : '';
-
-    if (eventName !== '') {
-      if (res[val].hasOwnProperty('oldValue')) {
-        if (res[val].oldValue !== res[val].newValue) {
-          const event = new CustomEvent(eventName, {
-            detail: {
-              payload: res[val].newValue
-            }
-          });
-          window.dispatchEvent(event, false);
+chrome.storage.onChanged.addListener(function (res) {
+  if (
+    res.hasOwnProperty('defNetwork') &&
+    res.defNetwork.hasOwnProperty('oldValue') &&
+    res.defNetwork.hasOwnProperty('newValue')
+  ) {
+    const newValKey = JSON.parse(res.defNetwork.newValue).key;
+    const oldValKey = JSON.parse(res.defNetwork.oldValue).key;
+    const isNew = oldValKey !== newValKey;
+    const netVersion = {
+      ETH: 1,
+      ROP: 3,
+      RIN: 4,
+      GOERLI: 5,
+      KOV: 42
+    };
+    if (isNew) {
+      const newKey = netVersion[newValKey];
+      const event = new CustomEvent(
+        WEB3_NETWORK_CHANGE.replace('{{id}}', extensionID),
+        {
+          detail: {
+            payload: newKey
+          }
         }
-      }
+      );
+      window.dispatchEvent(event, false);
     }
-  });
+  }
 });
 
-chrome.runtime.onMessage.addListener(function(request, _, callback) {
+chrome.runtime.onMessage.addListener(function (request, _, callback) {
   if (
     request.event === SELECTED_MEW_CX_ACC ||
     request.event === REJECT_MEW_CX_ACC
@@ -154,7 +161,7 @@ chrome.runtime.onMessage.addListener(function(request, _, callback) {
 });
 
 const events = {};
-events[WEB3_SUBSCRIBE] = function(e) {
+events[WEB3_SUBSCRIBE] = function (e) {
   const payload = recursivePayloadStripper(e.detail);
   chrome.runtime.sendMessage(
     extensionID,
@@ -165,7 +172,7 @@ events[WEB3_SUBSCRIBE] = function(e) {
     {}
   );
 };
-events[WEB3_GET_TX_COUNT] = function(e) {
+events[WEB3_GET_TX_COUNT] = function (e) {
   const payload = recursivePayloadStripper(e.detail);
   chrome.runtime.sendMessage(
     extensionID,
@@ -183,7 +190,7 @@ events[WEB3_GET_TX_COUNT] = function(e) {
     }
   );
 };
-events[WEB3_QUERY_GASPRICE] = function() {
+events[WEB3_QUERY_GASPRICE] = function () {
   chrome.runtime.sendMessage(
     extensionID,
     {
@@ -199,7 +206,7 @@ events[WEB3_QUERY_GASPRICE] = function() {
     }
   );
 };
-events[WEB3_GET_GAS] = function(e) {
+events[WEB3_GET_GAS] = function (e) {
   const payload = recursivePayloadStripper(e.detail);
   chrome.runtime.sendMessage(
     extensionID,
@@ -217,7 +224,7 @@ events[WEB3_GET_GAS] = function(e) {
     }
   );
 };
-events[WEB3_UNSUBSCRIBE] = function(e) {
+events[WEB3_UNSUBSCRIBE] = function (e) {
   const payload = recursivePayloadStripper(e.detail);
   chrome.runtime.sendMessage(
     extensionID,
@@ -244,13 +251,13 @@ events[WEB3_UNSUBSCRIBE] = function(e) {
   );
 };
 
-events[WEB3_DETECTED] = function() {
+events[WEB3_DETECTED] = function () {
   chrome.runtime.sendMessage(extensionID, {
     event: CX_WEB3_DETECTED
   });
 };
 
-events[WEB3_RPC_REQUEST] = function(e) {
+events[WEB3_RPC_REQUEST] = function (e) {
   chrome.runtime.sendMessage(
     extensionID,
     {
@@ -276,7 +283,7 @@ events[WEB3_RPC_REQUEST] = function(e) {
   );
 };
 
-events[WEB3_GET_ACC] = function(e) {
+events[WEB3_GET_ACC] = function (e) {
   const url = extractRootDomain(e.detail.from);
   chrome.storage.sync.get(url, storedAccounts => {
     const meta = {};
@@ -317,7 +324,7 @@ events[WEB3_GET_ACC] = function(e) {
   });
 };
 
-events[WEB3_SEND_TX] = function(e) {
+events[WEB3_SEND_TX] = function (e) {
   const newPayload = {
     tx: recursivePayloadStripper(e.detail.tx),
     url: stripTags(window.location.origin)
@@ -328,7 +335,7 @@ events[WEB3_SEND_TX] = function(e) {
   });
 };
 
-events[WEB3_SEND_SIGN_MSG] = function(e) {
+events[WEB3_SEND_SIGN_MSG] = function (e) {
   const newPayload = {
     msgToSign: recursivePayloadStripper(e.detail.msgToSign),
     address: stripTags(e.detail.address),

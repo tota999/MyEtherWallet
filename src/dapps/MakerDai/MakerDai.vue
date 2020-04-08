@@ -93,7 +93,7 @@
             class="mr-2 mb-1"
             @click="openManage(value)"
           >
-            <b>{{ $t('dappsMaker.vault-id') }}</b>
+            <b>{{ $t('dappsMCDMaker.vault-id') }}</b>
             <b-badge variant="light" class="ml-2" style="font-size: 15px;"
               ># {{ value }}</b-badge
             >
@@ -185,9 +185,7 @@ import MewPlugin from 'mew-maker-plugin';
 const { DAI } = Maker;
 
 const bnOver = (one, two, three) => {
-  return toBigNumber(one)
-    .times(toBigNumber(two))
-    .div(toBigNumber(three));
+  return toBigNumber(one).times(toBigNumber(two)).div(toBigNumber(three));
 };
 
 const afterLoadShow = {
@@ -217,13 +215,13 @@ export default {
   props: {
     tokensWithBalance: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     getBalance: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     highestGas: {
       type: String,
@@ -288,7 +286,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account', 'gasPrice', 'web3', 'network', 'ens']),
+    ...mapState('main', ['account', 'gasPrice', 'web3', 'network', 'ens']),
     currentProxyAddress() {
       return this.proxyAddress;
     },

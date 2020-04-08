@@ -24,6 +24,11 @@ describe('CreateWalletInput.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should render correct value props', () => {
     const value = '100';
     wrapper.setProps({ value });
@@ -34,10 +39,7 @@ describe('CreateWalletInput.vue', () => {
     const strengthClass = 'strengthClass';
     wrapper.setData({ strengthClass });
     expect(
-      wrapper
-        .find('span')
-        .classes()
-        .indexOf(strengthClass)
+      wrapper.find('span').classes().indexOf(strengthClass)
     ).toBeGreaterThan(-1);
 
     const switcher = sinon.stub();

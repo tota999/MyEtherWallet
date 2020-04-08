@@ -36,6 +36,11 @@ xdescribe('ManageENSContainer.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should push correct route', () => {
     expect(push.calledWith('/interface/dapps/register-domain'));
   });
@@ -78,10 +83,7 @@ xdescribe('ManageENSContainer.vue', () => {
     it('should render correct transferDomain props', () => {
       const transferDomain = sinon.stub();
       wrapper.setData({ transferDomain });
-      wrapper
-        .findAll('.submit-container button')
-        .at(1)
-        .trigger('click');
+      wrapper.findAll('.submit-container button').at(1).trigger('click');
       expect(transferDomain.called).toBe(true);
     });
   });

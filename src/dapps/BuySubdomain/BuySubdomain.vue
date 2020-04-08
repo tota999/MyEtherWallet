@@ -79,8 +79,8 @@ export default {
   },
   data() {
     return {
-      subdomainContract: function() {},
-      ensContract: function() {},
+      subdomainContract: function () {},
+      ensContract: function () {},
       results: [],
       domainName: '',
       knownRegistrarInstances: {},
@@ -88,7 +88,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['ethDonationAddress', 'ens', 'account', 'web3']),
+    ...mapState('main', ['ethDonationAddress', 'ens', 'account', 'web3']),
     sortedResults() {
       const newArr = this.results;
       newArr.sort((a, b) => {
@@ -122,7 +122,7 @@ export default {
     });
   },
   methods: {
-    debounceInput: web3.utils._.debounce(function(e) {
+    debounceInput: web3.utils._.debounce(function (e) {
       try {
         this.domainName = normalise(e.target.value);
         this.hasError = false;

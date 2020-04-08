@@ -54,7 +54,7 @@ export default {
   props: {
     walletConstructor: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     hardwareBrand: {
       type: String,
@@ -78,7 +78,7 @@ export default {
       this.password == '';
       this.$refs.passwordInput.focus();
     },
-    unlockWallet() {
+    async unlockWallet() {
       this.walletConstructor('', this.password)
         .then(_newWallet => {
           this.$emit('hardwareWalletOpen', _newWallet);

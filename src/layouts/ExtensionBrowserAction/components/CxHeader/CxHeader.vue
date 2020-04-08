@@ -59,14 +59,14 @@
               <notification
                 v-if="
                   $route.fullPath.includes('view-wallet-info') ||
-                    $route.fullPath.includes('interface')
+                  $route.fullPath.includes('interface')
                 "
                 ref="notification"
               />
               <extension-notification
                 v-if="
                   !$route.fullPath.includes('view-wallet-info') &&
-                    !$route.fullPath.includes('interface')
+                  !$route.fullPath.includes('interface')
                 "
               />
             </b-nav-item>
@@ -125,7 +125,7 @@ export default {
     return { isMewCx: isMewCx, gasPrice: '0' };
   },
   computed: {
-    ...mapState(['account', 'web3', 'network']),
+    ...mapState('main', ['account', 'web3', 'network']),
     address() {
       return this.account.address;
     },

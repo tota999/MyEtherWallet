@@ -19,20 +19,22 @@
         </div>
       </a>
     </div>
-    <div class="global__interface-block__margin-top slider-container">
+    <div class="global__interface-block__margin-top ad-slider-container">
       <b-carousel
         v-model="slide"
         :interval="adInterval"
-        controls
         indicators
+        controls
         background="#fff"
         @sliding-start="onSlideStart"
         @sliding-end="onSlideEnd"
       >
         <b-carousel-slide>
-          <mew-connect-ad />
+          <adex-ad />
         </b-carousel-slide>
-
+        <b-carousel-slide>
+          <mew-wallet-ad />
+        </b-carousel-slide>
         <b-carousel-slide>
           <buy-eth-ad />
         </b-carousel-slide>
@@ -42,14 +44,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 import ads from './adComponents';
 
 export default {
   components: {
     'buy-eth-ad': ads.buyEthAd,
-    'mew-connect-ad': ads.mewConnectAd
+    'mew-wallet-ad': ads.mewWalletAd,
+    'adex-ad': ads.AdEx
   },
   props: {},
   data() {
@@ -62,11 +63,6 @@ export default {
       currentAdIndex: 1
     };
   },
-  computed: {
-    ...mapState(['network', 'web3', 'online'])
-  },
-  watch: {},
-  mounted() {},
   methods: {
     pauseAds() {
       if (this.adInterval > 0) {
@@ -86,6 +82,31 @@ export default {
 </style>
 
 <style lang="scss">
+@import '~@/scss/GlobalVariables';
+
+.ad-slider-container {
+  %base {
+    height: 30px;
+    top: 70px;
+  }
+  .carousel-control-prev {
+    @extend %base;
+    left: -10px;
+
+    @media all and (max-width: $mobile-width) {
+      left: -25px;
+    }
+  }
+  .carousel-control-next {
+    @extend %base;
+    right: -10px;
+
+    @media all and (max-width: $mobile-width) {
+      right: -25px;
+    }
+  }
+}
+
 .carousel-caption {
   position: relative;
   right: initial;

@@ -77,7 +77,7 @@ export default {
     },
     supportedCoins: {
       type: Object,
-      default: function() {}
+      default: function () {}
     },
     resolverMultiCoinSupport: {
       type: Boolean,
@@ -85,11 +85,11 @@ export default {
     },
     txtRecords: {
       type: Object,
-      default: function() {}
+      default: function () {}
     }
   },
   computed: {
-    ...mapState(['account']),
+    ...mapState('main', ['account']),
     fullDomainName() {
       return `${this.hostName}.${this.tld}`;
     },

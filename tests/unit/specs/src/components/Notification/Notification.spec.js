@@ -1,6 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import NotificationsContainer from '@/containers/NotificationsContainer/NotificationsContainer.vue';
 import { Tooling } from '@@/helpers';
+import Vuex from 'vuex';
+import { state, getters } from '@@/helpers/mockStore';
 
 const showModal = jest.fn();
 
@@ -19,7 +21,15 @@ describe('NotificationsContainer.vue', () => {
     const baseSetup = Tooling.createLocalVueInstance();
     localVue = baseSetup.localVue;
     i18n = baseSetup.i18n;
-    store = baseSetup.store;
+    store = new Vuex.Store({
+      modules: {
+        main: {
+          namespaced: true,
+          state,
+          getters
+        }
+      }
+    });
   });
 
   beforeEach(() => {
@@ -32,6 +42,11 @@ describe('NotificationsContainer.vue', () => {
         'b-modal': BModalStub
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   it('should render correct unreadCount', () => {

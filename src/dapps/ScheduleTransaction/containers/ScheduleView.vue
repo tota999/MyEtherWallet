@@ -193,7 +193,7 @@
                       :key="index"
                       :class="['mode-btn', mode === selectedMode && 'selected']"
                       @click="selectedMode = mode"
-                      >{{ mode.name }}</b-button
+                      >{{ $t(mode.name) }}</b-button
                     >
                   </b-button-group>
                 </div>
@@ -367,7 +367,7 @@ export default {
   props: {
     tokensWithBalance: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     }
@@ -409,7 +409,7 @@ export default {
     };
   },
   computed: {
-    ...mapState([
+    ...mapState('main', [
       'web3',
       'network',
       'gasPrice',
@@ -652,9 +652,7 @@ export default {
         Toast.responseHandler(err, Toast.ERROR);
       });
 
-    this.datetime = moment()
-      .add(1, 'days')
-      .toISOString();
+    this.datetime = moment().add(1, 'days').toISOString();
     this.futureGasPrice = (this.gasPrice >= this.minGasPrice
       ? this.gasPrice
       : this.minGasPrice
@@ -669,7 +667,7 @@ export default {
     this.timeBounty = this.timeBountyPresets[0];
     this.deposit = this.timeBountyPresets[0] * 2;
   },
-  mounted: async function() {
+  mounted: async function () {
     if (this.online) {
       this.eac = new EAC(this.web3);
 
@@ -691,9 +689,7 @@ export default {
       this.clearInput = !this.clearInput;
       this.hexAddress = '';
       this.address = '';
-      this.datetime = moment()
-        .add(1, 'days')
-        .toISOString();
+      this.datetime = moment().add(1, 'days').toISOString();
       this.clearTimezone = !this.clearTimezone;
       this.clearAddress = !this.clearAddress;
       this.timeBounty = EAC_SCHEDULING_CONFIG.TIME_BOUNTY_DEFAULTS[0];

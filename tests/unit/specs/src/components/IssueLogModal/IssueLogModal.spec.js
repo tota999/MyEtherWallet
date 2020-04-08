@@ -6,6 +6,8 @@ import StandardButton from '@/components/Buttons/StandardButton';
 import sinon from 'sinon';
 import MenuTitle from '@/components/MenuTitle';
 import PopOver from '@/components/PopOver';
+import { actions } from '@@/helpers/mockStore';
+import VueX from 'vuex';
 
 const hideModal = sinon.stub();
 
@@ -41,7 +43,14 @@ describe('IssuesLogModal.vue', () => {
     const baseSetup = Tooling.createLocalVueInstance();
     localVue = baseSetup.localVue;
     i18n = baseSetup.i18n;
-    store = baseSetup.store;
+    store = store = new VueX.Store({
+      modules: {
+        main: {
+          namespaced: true,
+          actions
+        }
+      }
+    });
     Vue.config.warnHandler = () => {};
   });
 
@@ -63,6 +72,11 @@ describe('IssuesLogModal.vue', () => {
         $eventHub: eventHub
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   // compile error
@@ -88,18 +102,10 @@ describe('IssuesLogModal.vue', () => {
 
   xit('should render correct showSkipper data', () => {
     wrapper.setData({ showSkipper: true });
-    expect(
-      wrapper
-        .find('.custom-marker')
-        .classes()
-        .indexOf('enable')
-    ).toBe(-1);
+    expect(wrapper.find('.custom-marker').classes().indexOf('enable')).toBe(-1);
     wrapper.setData({ neverShow: true });
     expect(
-      wrapper
-        .find('.custom-marker')
-        .classes()
-        .indexOf('enable')
+      wrapper.find('.custom-marker').classes().indexOf('enable')
     ).toBeGreaterThan(-1);
   });
 

@@ -23,6 +23,11 @@ describe('StandardInput.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should render correct inputValue data', () => {
     const options = {
       isTextarea: true,
@@ -44,10 +49,7 @@ describe('StandardInput.vue', () => {
 
     wrapper.setProps({ options });
     expect(
-      wrapper
-        .find('.input-container')
-        .classes()
-        .indexOf(wrapper.vm.borderClass)
+      wrapper.find('.input-container').classes().indexOf(wrapper.vm.borderClass)
     ).toBeGreaterThan(-1);
   });
 

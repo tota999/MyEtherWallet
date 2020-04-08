@@ -62,9 +62,17 @@
     "description": "Опишите проблему"
   },
   "issue-log": {
-    "error-text": "Что-то пошло не так",
+    "oops": "Ой",
+    "error-text": "Что-то пошло не так. Вы можете помочь нам, отправив отчет об этой ошибке.",
     "inform-error": "Вы хотите сообщить MEW об этой ошибке?",
-    "never-show": "Больше не показывать"
+    "hide-for-now": "Временно скрыть",
+    "send-button": "Отправить MEW отчет об ошибке",
+    "no-thanks": "Нет, спасибо",
+    "show-error-details": "Показать подробности ошибки"
+  },
+  "updates": {
+    "new": "Найдено новое обновление! Пожалуйста, обновите браузер, чтобы получить самую обновленную версию",
+    "update-error": "Что-то пошло не так с нашими сервис-работниками!"
   },
   "wallet": {
     "create-new": "Создать новый кошелек",
@@ -74,11 +82,16 @@
     "unlock": "Разблокировать кошелек",
     "do-not-have": "Нет кошелька?",
     "passphrase": "Парольная фраза",
-    "own": "Кошелек {nickname}"
+    "own": "Кошелек {nickname}",
+    "login": "Login to access your wallet!"
   },
   "mewconnect": {
     "string": "MEWconnect",
     "desc": "Партнерское приложение MEW обеспечивает безопасность в стиле аппаратного кошелька на вашем устройстве iOS или Android, помогая вам обеспечить беспрецедентную защиту ваших денежных средств."
+  },
+  "mew-wallet": {
+    "string": "MEW wallet",
+    "desc": "Официальное полнофункциональное приложение MEW дает доступ к Ethereum прямо с вашего смартфона iOS или Android. С MEW wallet, вы в полном контроле. {learn-more}"
   },
   "swap": "Обмен",
   "token": "Токен | Токены",
@@ -105,11 +118,13 @@
   },
   "decision-tree": {
     "subcategories": "Подразделы",
-    "no-results": "Ничего не найдено"
+    "no-results": "Ничего не найдено",
+    "quick-help": "Быстрая справка"
   },
   "optional": "Опция",
   "value": "Сумма",
   "network": "Сеть",
+  "current-network": "Current Network",
   "addr": "Адрес",
   "via-contract-address": "Адрес контракта",
   "lowercase-addr": "адрес",
@@ -117,7 +132,8 @@
   "enter-addr": "Пожалуйста, введите адрес",
   "balance": {
     "string": "Баланс",
-    "total": "Итоговый баланс"
+    "total": "Итоговый баланс",
+    "wallet": "Balance of your wallet"
   },
   "notifications": {
     "no-notifications": "Нет уведомлений :(",
@@ -148,6 +164,7 @@
   "to": "Кому",
   "ok": "OK",
   "buy-eth": "Купить ETH",
+  "dont-have-eth": "Don't have ETH? Buy ETH!",
   "security": "Безопасность",
   "status": "Статус",
   "time": "Время",
@@ -163,5 +180,8 @@
   "disconnected": "Отсоединено",
   "mew-icon": "Иконка MEW",
   "kitties": "kitties",
-  "mewtopia": "MEWtopia"
+  "mewtopia": "MEWtopia",
+  "language": "Язык",
+  "logout": "Logout",
+  "settings": "Настройки"
 }

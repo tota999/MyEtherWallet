@@ -84,7 +84,7 @@ export default {
   props: {
     tokensWithBalance: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -94,7 +94,7 @@ export default {
     },
     values: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           maxEthDraw: '',
           maxUsdDraw: '',
@@ -125,7 +125,7 @@ export default {
     },
     getValueOrFunction: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -141,7 +141,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account', 'gasPrice', 'web3', 'network', 'ens']),
+    ...mapState('main', ['account', 'gasPrice', 'web3', 'network', 'ens']),
     btnActive() {
       return Misc.isValidETHAddress(this.address) && this.checkBoxChecked;
     }

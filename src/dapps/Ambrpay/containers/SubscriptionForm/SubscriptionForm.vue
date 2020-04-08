@@ -99,7 +99,7 @@ export default {
   props: {
     subscriptions: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     }
@@ -117,7 +117,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['web3', 'network', 'account']),
+    ...mapState('main', ['web3', 'network', 'account']),
     isValidInput() {
       return (
         this.isValidAddress &&

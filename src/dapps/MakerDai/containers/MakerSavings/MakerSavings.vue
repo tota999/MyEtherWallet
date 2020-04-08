@@ -5,16 +5,18 @@
     </div>
     <div v-if="ready" class="currency-ops-new">
       <h3 class="mb-3">
-        {{ $t('dappsMaker.earn-with-dai') }}
+        {{ $t('dappsMCDMaker.earn-with-dai') }}
       </h3>
       <div>
         {{
-          $t('dappsMaker.dai-savings-rate', {
+          $t('dappsMCDMaker.dai-savings-rate', {
             value: displayPercentValue(yearlyRate)
           })
         }}
       </div>
-      <div>{{ $t('dappsMaker.deposited-amount', { value: deposited }) }}</div>
+      <div>
+        {{ $t('dappsMCDMaker.deposited-amount', { value: deposited }) }}
+      </div>
       <div class="currency-picker-container">
         <div v-if="showSetupScreen">
           <div>
@@ -56,13 +58,13 @@
               <b-button
                 :class="['submit-btn', showDepositDisplay ? 'active' : '']"
                 @click="showDeposit(true)"
-                >{{ $t('dappsMaker.deposit') }}</b-button
-              >
+                >{{ $t('dappsMCDMaker.deposit') }}
+              </b-button>
               <b-button
                 :class="['submit-btn', !showDepositDisplay ? 'active' : '']"
                 @click="showDeposit(false)"
-                >{{ $t('dappsMaker.withdraw') }}</b-button
-              >
+                >{{ $t('dappsMCDMaker.withdraw') }}
+              </b-button>
             </b-button-group>
           </div>
 
@@ -171,7 +173,7 @@ export default {
   props: {
     ethPrice: {
       type: BigNumber,
-      default: function() {
+      default: function () {
         return new BigNumber(0);
       }
     },
@@ -181,13 +183,13 @@ export default {
     },
     cdps: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     availableCdps: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
@@ -197,7 +199,7 @@ export default {
     },
     getValueOrFunction: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -222,7 +224,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account', 'gasPrice', 'web3', 'network', 'ens']),
+    ...mapState('main', ['account', 'gasPrice', 'web3', 'network', 'ens']),
     showSetupScreen() {
       return !this.hasAllowance || !this.proxyPresent;
     },

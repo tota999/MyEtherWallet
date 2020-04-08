@@ -208,7 +208,8 @@ import KyberNetwork from '@/assets/images/etc/kybernetwork.png';
 import Bity from '@/assets/images/etc/bity.png';
 import Simplex from '@/assets/images/etc/simplex.png';
 import Changelly from '@/assets/images/etc/changelly.png';
-import bityBeta from '@/assets/images/etc/bitybeta.png';
+
+import { providerNames, fiat } from '@/partners';
 
 import ProviderInfoList from './ProviderInfoList';
 import { mapState } from 'vuex';
@@ -224,19 +225,19 @@ export default {
   props: {
     allSupportedProviders: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     providerData: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     noProvidersPair: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
@@ -254,13 +255,13 @@ export default {
     },
     providersFound: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
     providerSelected: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
@@ -293,13 +294,13 @@ export default {
         simplex: Simplex,
         changelly: Changelly
       },
-      betaLogos: {
-        bity: bityBeta
-      }
+      betaLogos: {},
+      providerNames: providerNames,
+      fiat: fiat.map(item => item.symbol)
     };
   },
   computed: {
-    ...mapState(['online', 'network']),
+    ...mapState('main', ['online', 'network']),
     displayToShow() {
       if (!this.online) {
         return 'offline';
@@ -410,7 +411,7 @@ export default {
     setSelectedProvider(provider) {
       this.providerChosen = provider;
       const providerEls = document.getElementsByClassName('providers');
-      Array.prototype.forEach.call(providerEls, function(el) {
+      Array.prototype.forEach.call(providerEls, function (el) {
         el.classList.remove('radio-selected');
       });
       const clickedEl = document.getElementsByClassName(provider)[0];
@@ -425,8 +426,10 @@ export default {
     },
     minNote(details) {
       if (details.minValue > 0) {
+        const decimals =
+          details.provider === this.providerNames.simplex ? 2 : 6;
         return [
-          `${toBigNumber(details.minValue).toFixed(6)} ${
+          `${toBigNumber(details.minValue).toFixed(decimals)} ${
             details.fromCurrency
           } (${this.$t('swap.from-min')}.)`
         ];
@@ -435,20 +438,30 @@ export default {
     },
     maxNote(details) {
       if (details.maxValue > 0) {
-        return `${toBigNumber(details.maxValue).toFixed(6)} ${
+        const decimals =
+          details.provider === this.providerNames.simplex ? 2 : 6;
+        return `${toBigNumber(details.maxValue).toFixed(decimals)} ${
           details.fromCurrency
         } (${this.$t('swap.max')}.)`;
       }
       return '';
     },
     formatRateDisplay(fromValue, fromCurrency, toValue, toCurrency) {
+      const decimalsFrom = this.fiat.includes(fromCurrency) ? 2 : 6;
+      const decimalsTo = this.fiat.includes(toCurrency) ? 2 : 6;
       return `${toBigNumber(fromValue).toFixed(
-        6
-      )} ${fromCurrency} = ${toBigNumber(toValue).toFixed(6)} ${toCurrency}`;
+        decimalsFrom
+      )} ${fromCurrency} = ${toBigNumber(toValue).toFixed(
+        decimalsTo
+      )} ${toCurrency}`;
     },
     normalizedRateDisplay(source) {
+      const decimals = source.provider === this.providerNames.simplex ? 2 : 6;
+      const fromValue = toBigNumber(source.fromValue)
+        .toFixed(decimals)
+        .toString();
       const toValue = this.valueForRate(this.fromValue, source.rate);
-      return `${source.fromValue} ${source.fromCurrency} = ${toValue} ${source.toCurrency}`;
+      return `${fromValue} ${source.fromCurrency} = ${toValue} ${source.toCurrency}`;
     },
     otherTextDisplay(contentDetails) {
       if (!contentDetails) return;
@@ -459,10 +472,7 @@ export default {
       }
     },
     valueForRate(rate, value) {
-      return toBigNumber(value)
-        .times(rate)
-        .toFixed(6)
-        .toString(10);
+      return toBigNumber(value).times(rate).toFixed(6).toString(10);
     }
   }
 };

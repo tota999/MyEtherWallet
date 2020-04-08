@@ -70,7 +70,7 @@ export default {
   props: {
     currency: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -103,7 +103,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['network']),
+    ...mapState('main', ['network']),
     networkToken() {
       return {
         name: this.network.type.name_long,

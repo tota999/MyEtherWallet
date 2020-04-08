@@ -25,7 +25,7 @@ describe('VerifyMessageContainer.vue', () => {
         }
       },
       wallet: {
-        getAddressString: function() {}
+        getAddressString: function () {}
       }
     });
     wrapper = shallowMount(VerifyMessageContainer, {
@@ -39,6 +39,11 @@ describe('VerifyMessageContainer.vue', () => {
         popover: PopOver
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   it('should render correct content', () => {});

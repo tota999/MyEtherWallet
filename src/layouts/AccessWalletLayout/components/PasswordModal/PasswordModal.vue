@@ -54,7 +54,7 @@
 import { WalletInterface } from '@/wallets';
 import { KEYSTORE as keyStoreType } from '@/wallets/bip44/walletTypes';
 import walletWorker from 'worker-loader!@/workers/wallet.worker.js';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import { Toast, Wallet } from '@/helpers';
 import WarningMessage from '@/components/WarningMessage';
 
@@ -65,7 +65,7 @@ export default {
   props: {
     file: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     }
@@ -78,7 +78,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['path', 'online']),
+    ...mapState('main', ['path', 'online']),
     inputValid() {
       return (
         this.walletRequirePass(this.file) &&
@@ -92,6 +92,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('main', ['decryptWallet']),
     walletRequirePass(ethjson) {
       if (ethjson.encseed != null) return true;
       else if (ethjson.Crypto != null || ethjson.crypto != null) return true;
@@ -111,7 +112,7 @@ export default {
           type: 'unlockWallet',
           data: [this.file, this.password]
         });
-        worker.onmessage = function(e) {
+        worker.onmessage = function (e) {
           const obj = {
             file: this.file,
             name: e.data.filename
@@ -126,7 +127,7 @@ export default {
             )
           );
         };
-        worker.onerror = function(e) {
+        worker.onerror = function (e) {
           e.preventDefault();
           self.spinner = false;
           Toast.responseHandler(e, Toast.ERROR);
@@ -147,7 +148,7 @@ export default {
       }
     },
     setUnlockedWallet(wallet) {
-      this.$store.dispatch('decryptWallet', [wallet]).then(() => {
+      this.decryptWallet([wallet]).then(() => {
         this.spinner = false;
         this.password = '';
         this.$router.push({

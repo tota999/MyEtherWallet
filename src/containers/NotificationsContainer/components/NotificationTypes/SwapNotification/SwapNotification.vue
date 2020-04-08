@@ -103,7 +103,7 @@ export default {
     },
     expand: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     index: {
       type: Number,
@@ -111,49 +111,49 @@ export default {
     },
     notice: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
       }
     },
     convertToGwei: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     convertToEth: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     getFiatValue: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     dateString: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     timeString: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     errorMessageString: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     hashLink: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     addressLink: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     processStatus: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     childUpdateNotification: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -170,7 +170,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['web3', 'network', 'notifications', 'wallet']),
+    ...mapState('main', ['web3', 'network', 'notifications', 'wallet']),
     errorMessage() {
       return this.errorMessageString(this.notice);
     },
@@ -267,6 +267,7 @@ export default {
             updateStatus(swapOnlyStatuses.CANCELLED);
             return;
           }
+
           const newStatus = await this.provider.getOrderStatus(
             this.notice.body,
             this.network.type.name

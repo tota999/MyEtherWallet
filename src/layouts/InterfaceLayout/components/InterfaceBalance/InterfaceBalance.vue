@@ -78,7 +78,7 @@ export default {
     },
     getBalance: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -87,7 +87,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['network'])
+    ...mapState('main', ['network'])
   },
   watch: {
     balance() {

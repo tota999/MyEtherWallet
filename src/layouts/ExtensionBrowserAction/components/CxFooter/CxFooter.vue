@@ -203,11 +203,11 @@ export default {
               to: '/send-offline-helper'
             },
             {
-              text: 'footer.verifyMessage',
+              text: 'verifyMessage.title',
               to: '/verify-message'
             },
             {
-              text: 'footer.viewWalletInfo',
+              text: 'footer.view-wallet-info',
               to: '/view-wallet-info'
             },
             {
@@ -280,12 +280,16 @@ export default {
         {
           to: 'https://www.medium.com/@myetherwallet',
           class: 'fa-medium'
+        },
+        {
+          to: 'https://t.me/myetherwalletofficial',
+          class: 'fa-telegram'
         }
       ]
     };
   },
   computed: {
-    ...mapState(['ethDonationAddress'])
+    ...mapState('main', ['ethDonationAddress'])
   },
   mounted() {
     if (Misc.isMewCx()) {

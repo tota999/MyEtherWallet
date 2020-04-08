@@ -19,7 +19,11 @@
           autocomplete="off"
         />
         <div class="address-end">
-          {{ address.substring(address.length - 4, address.length) }}
+          {{
+            address !== null && address !== ''
+              ? address.substring(address.length - 4, address.length)
+              : ''
+          }}
         </div>
         <div class="buttons-container">
           <button @click="openQrcode">
@@ -68,11 +72,11 @@ export default {
     },
     print: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     switchAddr: {
       type: Function,
-      default: function() {}
+      default: function () {}
     }
   },
   data() {
@@ -81,7 +85,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account'])
+    ...mapState('main', ['account'])
   },
   mounted() {
     if (this.account.address !== null) {

@@ -4,6 +4,8 @@ import SuccessModal from '@/containers/ConfirmationContainer/components/SuccessM
 import StandardButton from '@/components/Buttons/StandardButton';
 import sinon from 'sinon';
 import { Tooling } from '@@/helpers';
+import VueX from 'vuex';
+import { state, getters } from '@@/helpers/mockStore';
 
 const hideModal = sinon.stub();
 const BModalStub = {
@@ -35,7 +37,15 @@ describe('SuccessModal.vue', () => {
     const baseSetup = Tooling.createLocalVueInstance();
     localVue = baseSetup.localVue;
     i18n = baseSetup.i18n;
-    store = baseSetup.store;
+    store = new VueX.Store({
+      modules: {
+        main: {
+          namespaced: true,
+          state,
+          getters
+        }
+      }
+    });
 
     Vue.config.warnHandler = () => {};
   });
@@ -56,6 +66,11 @@ describe('SuccessModal.vue', () => {
         $router: mockRoute
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   it('should render correct message props', () => {

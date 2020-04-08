@@ -1,6 +1,8 @@
 import { shallowMount } from '@vue/test-utils';
 import CurrencyPicker from '@/layouts/InterfaceLayout/components/CurrencyPicker/CurrencyPicker.vue';
 import { Tooling } from '@@/helpers';
+import VueX from 'vuex';
+import { state, getters } from '@@/helpers/mockStore';
 
 const currency = [
   { symbol: 'BTC', name: 'Bitcoin' },
@@ -14,7 +16,15 @@ describe('CurrencyPicker.vue', () => {
     const baseSetup = Tooling.createLocalVueInstance();
     localVue = baseSetup.localVue;
     i18n = baseSetup.i18n;
-    store = baseSetup.store;
+    store = new VueX.Store({
+      modules: {
+        main: {
+          namespaced: true,
+          state,
+          getters
+        }
+      }
+    });
   });
 
   beforeEach(() => {
@@ -28,6 +38,11 @@ describe('CurrencyPicker.vue', () => {
         localCurrency: currency
       }
     });
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
   });
 
   it('should render correct localCurrency data', () => {
@@ -51,31 +66,19 @@ describe('CurrencyPicker.vue', () => {
   });
 
   it('should show elements according to token props', () => {
-    expect(
-      wrapper
-        .findAll('.dropdown-container p')
-        .at(0)
-        .isVisible()
-    ).toBe(false);
-    expect(
-      wrapper
-        .findAll('.dropdown-container p')
-        .at(1)
-        .isVisible()
-    ).toBe(true);
+    expect(wrapper.findAll('.dropdown-container p').at(0).isVisible()).toBe(
+      false
+    );
+    expect(wrapper.findAll('.dropdown-container p').at(1).isVisible()).toBe(
+      true
+    );
     wrapper.setProps({ token: false });
-    expect(
-      wrapper
-        .findAll('.dropdown-container p')
-        .at(0)
-        .isVisible()
-    ).toBe(false);
-    expect(
-      wrapper
-        .findAll('.dropdown-container p')
-        .at(1)
-        .isVisible()
-    ).toBe(false);
+    expect(wrapper.findAll('.dropdown-container p').at(0).isVisible()).toBe(
+      false
+    );
+    expect(wrapper.findAll('.dropdown-container p').at(1).isVisible()).toBe(
+      false
+    );
   });
 
   xit('should render correct search data', () => {

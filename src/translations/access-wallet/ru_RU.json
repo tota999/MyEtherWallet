@@ -1,12 +1,21 @@
 {
   "mewconnect": {
-    "option-text": "Использовать MEWconnect для получения доступа к моему кошельку",
+    "option-text": "Отсканируйте QR-код для доступа с помощью MEW wallet или MEWconnect",
     "modal": {
-      "title": "Доступ с помощью MEWconnect",
-      "text1": "Используйте приложение MEWconnect для сканирования указанного выше QR-кода",
-      "text2": "Нет приложения? Загрузите сейчас."
+      "title": "Мобильный доступ",
+      "text1": "Используйте приложение MEW wallet или MEWconnect для сканирования указанного выше QR-кода",
+      "text2": "Нет приложения MEW wallet? Загрузите сейчас."
     },
-    "warning": "MEWconnect несовместим с iPads."
+    "protocol": "Протокол MEWconnect",
+    "warning": "MEW wallet и MEWconnect несовместимы с iPads."
+  },
+  "mobile-app": {
+    "option-title": "Мобильное приложение",
+    "examples": "WalletConnect; WalletLink",
+    "modal": {
+      "title": "Мобильный доступ"
+    },
+    "mew-connect": "MEWconnect"
   },
   "finney": {
     "scan-info": "Чтобы подключиться, отсканируйте QR-код из приложения {wallet} на вашем {finney-bc}",
@@ -28,6 +37,14 @@
       "button-choose": "Продолжить"
     },
     "examples": "Ledger wallet, FINNEY, Trezor, BitBox, Secalot, KeepKey, XWallet"
+  },
+  "bitbox": {
+    "modal": {
+      "title": "Select BitBox wallet"
+    },
+    "bitbox02": "BitBox02",
+    "pairing": "Please confirm the encryption pairing code matches what is shown on your BitBox02.",
+    "unlock": "Enter BitBox02 password to unlock."
   },
   "software": {
     "option-title": "Программный доступ",
@@ -109,8 +126,9 @@
   "network-and-address": "Сеть и адрес",
   "please-type-in-mnemonic-phrase": "Введите вашу мнемоническую фразу.",
   "password": "Пароль",
-  "web3-wallet-desc": "Используйте Web3 кошелек (MEW CX, MetaMask, Dapper).",
-  "web3-wallet": "Расширение для браузера",
+  "access-wallet-or": "или",
+  "web3-wallet-desc": "MetaMask; Dapper",
+  "web3-wallet": "MEW CX",
   "refresh": "Обновить",
   "unlock-web3-wallet": "Не удается получить доступ к кошельку! Пожалуйста, разблокируйте ваш кошелек через расширение для браузера",
   "try-again": "Повторить попытку",
@@ -119,5 +137,8 @@
   "wallet-options": "Проверьте историю транзакций, скачайте новый файл-хранилищe ключa, распечатайте бумажный кошелек и многое другое!",
   "xwallet-desc": "Используйте аккаунт Pundi X Savings от MEW для сканирования QR-кода сверху",
   "xwallet-title": "Доступ через XWallet",
-  "get-it-now": "Загрузить сейчас"
+  "get-it-now": "Загрузить сейчас",
+  "or": "ИЛИ ПОДКЛЮЧИТЬСЯ С",
+  "wallet-connect": "WalletConnect",
+  "wallet-link": "WalletLink"
 }

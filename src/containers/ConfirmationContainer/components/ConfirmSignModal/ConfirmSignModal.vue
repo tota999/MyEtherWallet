@@ -61,7 +61,7 @@
           <p class="learn-more">
             {{ $t('common.have-issues') }}
             <a
-              href="https:/kb.myetherwallet.com"
+              href="https://kb.myetherwallet.com"
               target="_blank"
               rel="noopener noreferrer"
               >{{ $t('common.learn-more') }}</a
@@ -85,7 +85,7 @@ export default {
   props: {
     confirmSignMessage: {
       type: Function,
-      default: function() {}
+      default: function () {}
     },
     signedMessage: {
       type: String,
@@ -111,7 +111,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['account']),
+    ...mapState('main', ['account']),
     signedMessageSignature() {
       if (this.signedMessage) {
         return this.signedMessage;

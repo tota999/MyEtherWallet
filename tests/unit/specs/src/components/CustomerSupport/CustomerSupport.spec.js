@@ -48,6 +48,11 @@ describe('CustomerSupport.vue', () => {
     });
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it('should render correct browser data', () => {
     expect(
       wrapper.vm.$el
@@ -98,17 +103,11 @@ describe('CustomerSupport.vue', () => {
 
   it('should render correct noIcon props', () => {
     expect(
-      wrapper
-        .find('.support-content')
-        .classes()
-        .indexOf('with-icon')
+      wrapper.find('.support-content').classes().indexOf('with-icon')
     ).toBeGreaterThan(-1);
     wrapper.setProps({ noIcon: true });
     expect(
-      wrapper
-        .find('.support-content')
-        .classes()
-        .indexOf('without-icon')
+      wrapper.find('.support-content').classes().indexOf('without-icon')
     ).toBeGreaterThan(-1);
   });
 
