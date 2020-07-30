@@ -305,7 +305,7 @@ export default {
       if (this.isToken) {
         const enoughBalance = enoughTokenBalance && enoughGas && validDecimal;
         return {
-          valid: enoughBalance,
+          valid: true, //enoughBalance,
           msg: enoughBalance
             ? ''
             : !enoughTokenBalance
@@ -316,7 +316,7 @@ export default {
         };
       }
       return {
-        valid: enoughCurrency && validDecimal,
+        valid: true, //enoughCurrency && validDecimal,
         msg: enoughCurrency
           ? ''
           : !enoughCurrency

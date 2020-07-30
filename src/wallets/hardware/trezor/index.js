@@ -31,6 +31,8 @@ class TrezorWallet {
   }
   async init(basePath) {
     this.basePath = basePath ? basePath : this.supportedPaths[0].path;
+    // eslint-disable-next-line
+    console.log(`this.basePath: ${this.basePath}`); // todo remove dev item
     const rootPub = await getRootPubKey(this.basePath);
     this.hdKey = new HDKey();
     this.hdKey.publicKey = Buffer.from(rootPub.publicKey, 'hex');
@@ -43,6 +45,8 @@ class TrezorWallet {
         common: commonGenerator(store.state.main.network)
       });
       const networkId = tx.getChainId();
+      // eslint-disable-next-line
+      console.log(`networkId: ${networkId}`); // todo remove dev item
       const options = {
         path: this.basePath + '/' + idx,
         transaction: getHexTxObject(tx)
